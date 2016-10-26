@@ -1,0 +1,44 @@
+{
+  "name": "[[ serviceName ]]",
+  "description": "An Node/Express container template for a micro-service.  Please update the name and description.",
+  "version": "0.1.0",
+  "author": "Asymmetrik",
+  "private": true,
+  "engines": {
+    "node": "0.12.x",
+    "npm": "2.5.x"
+  },
+  "scripts": {
+    "start": "gulp run | bunyan",
+    "test": "gulp test",
+    "debug": "gulp debug | bunyan",
+    "jsdoc": "jsdoc server.js -c jsdoc.json -r"
+  },
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.4",
+    "gulp-insert": "^0.4",
+    "gulp-jshint": "^1.8",
+    "gulp-load-plugins": "^0.7",
+    "gulp-rename": "~1.2",
+    "gulp-shell": "^0.5.2",
+    "gulp-util": "^3.0",
+    "jsdoc": "^3.4.0",
+    "jshint-stylish": "^1.0",
+    "microservice-framework": "file:[[ msfDirectory ]]"
+  },
+  "devDependencies": {
+    "gulp-expect-file": "0.0.7",
+    "gulp-livereload": "^2.1",
+    "gulp-mocha": "^1.1",
+    "gulp-node-inspector": "0.0",
+    "gulp-nodemon": "^1.0",
+    "gulp-watch": "^1.1",
+    "ink-docstrap": "^1.1.4",
+    "maildev": "0.13.4",
+    "proxyquire": "^1.7.10",
+    "should": "^4.1",
+    "supertest": "^0.14",
+    "yargs": "^4.7.1"
+  }
+}

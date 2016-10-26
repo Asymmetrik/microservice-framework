@@ -1,0 +1,15 @@
+.project
+.DS_Store
+.nodemonignore
+.sass-cache/
+npm-debug.log
+node_modules/
+.bower-*/
+.idea/
+*.iml
+docs/*
+log/
+
+## Ignore local development env files
+config/env/*-local.js
+local.env
