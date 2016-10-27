@@ -18,13 +18,12 @@
 	"trailing": true, // Prohibit trailing whitespaces.
 	"smarttabs": false, // Suppresses warnings about mixed tabs and spaces
 	"globals": { // Globals variables.
-		"jasmine": true,
-		"angular": true,
-		"ApplicationConfiguration": true,
 		"define": true,
 		"require": true,
 		"exports": true,
 		"module": true,
+
+		//Testing variables
 		"describe": true,
 		"before": true,
 		"beforeEach": true,
@@ -33,18 +32,6 @@
 		"it": true,
 		"inject": true,
 		"expect": true,
-		"L": true,
-		"d3": true,
-		"_": true,
-		"$": true,
-		"Tourist": true,
-		"Backbone": true,
-
-		//Testing variables
-		"browser": true,
-		"element": true,
-		"by": true,
-		"protractor": true,
 		"afterAll": true,
 		"beforeAll": true,
 		"spyOn": true
@@ -52,5 +39,4 @@
 	"indent": 4, // Specify indentation spacing
 	"devel": true, // Allow development statements e.g. `console.log();`.
 	"noempty": true // Prohibit use of empty blocks.
-
 }

@@ -8,13 +8,13 @@ RUN unzip awscli-bundle.zip
 RUN ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
 RUN rm -rf awscli-bundle awscli-bundle.zip
 
-WORKDIR /usr/src/app
+WORKDIR /srv/app
 
-COPY package.json /usr/src/app/
+COPY package.json /srv/app/
 RUN npm install
-COPY . /usr/src/app/
+COPY . /srv/app/
 
-ENV PATH="/usr/src/app:${PATH}"
+ENV PATH="/srv/app:${PATH}"
 
-ENTRYPOINT ["./Entrypoint.sh"]
+ENTRYPOINT ["/srv/app/Entrypoint.sh"]
 CMD ["npm", "start"]

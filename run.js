@@ -64,11 +64,12 @@ function copy(sourcePath, targetPath, options) {
 			.then(function (stats) {
 				// If it's a file, copy the file and replace any parameters with the passed-in options
 				if (stats.isFile()) {
+					var mode = stats.mode & 0777;
 
 					// See whether the new file already exists
 					return exists(newfilepath)
 						.then(function(ex) {
-							console.log(newfilepath, ':', ex ? '(overwritten)' : '(created)');
+							console.log(newfilepath, ':', ex ? '(overwritten)' : '(created)', 'mode:', mode.toString(8));
 						})
 						// Get the files' contents
 						.then(readfile.bind(null, oldfilepath, 'utf-8'))
@@ -76,8 +77,10 @@ function copy(sourcePath, targetPath, options) {
 						// Replace placeholder variables
 						.then(replaceOptions.bind(null, options))
 
-						// Write to the new location
-						.then(writefile.bind(null, newfilepath));
+						// Write to the new location with the same file permissions
+						.then(function(data) {
+							return writefile(newfilepath, data, { mode: mode });
+						});
 				}
 				else if (stats.isDirectory()) {
 
