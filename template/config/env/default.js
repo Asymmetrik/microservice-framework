@@ -2,7 +2,7 @@
 
 /** @module config/env/default */
 
-var year = 1900 + (new Date()).getYear();
+var env = require('var');
 
 /**
  * @name exports
@@ -10,16 +10,17 @@ var year = 1900 + (new Date()).getYear();
  * @summary Default environment
  */
 module.exports = {
-	port: process.env.PORT || 3000,
+	port: env.PORT,
 	assets: 'default',
 
 	log: {
-		level: 'info'
+		level: env.LOG_LEVEL
 	},
 
 	mongoose: {
 		debug: false
 	},
+	db: 'mongodb://' + env.MONGO_HOST + '/' + env.MONGO_DATABASE,
 
 	auth: {
 		strategy: 'local',
@@ -29,14 +30,13 @@ module.exports = {
 		//header: 'x-ssl-client-s-dn',
 
 		// Session settings are required regardless of auth strategy
-		sessionSecret: 'some-secret',
+		sessionSecret: env.SESSION_SECRET,
 		sessionCollection: 'sessions',
 		sessionCookie: {
 			maxAge: 60 * 60 * 24 * 1000	// 24 hours
 		}
-
 	},
 
 	dateFormat: 'YYYY-MM-DD',
-	siteTimezone: 'America/New_York' // moment-timezone timezone string for the server.
+	siteTimezone: env.TIMEZONE // moment-timezone timezone string for the server.
 };

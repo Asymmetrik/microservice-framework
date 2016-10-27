@@ -6,7 +6,7 @@
   "private": true,
   "engines": {
     "node": "0.12.x",
-    "npm": "2.5.x"
+    "npm": "2.x"
   },
   "scripts": {
     "start": "gulp run | bunyan",
@@ -25,7 +25,8 @@
     "gulp-util": "^3.0",
     "jsdoc": "^3.4.0",
     "jshint-stylish": "^1.0",
-    "microservice-framework": "file:[[ msfDirectory ]]"
+    "microservice-framework": "https://bitbucket.org/medstarcportal/microservice-framework.git#features/cm-805-setup",
+    "var": "^0.2.0"
   },
   "devDependencies": {
     "gulp-expect-file": "0.0.7",

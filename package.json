@@ -14,7 +14,7 @@
   },
   "engines": {
     "node": "0.12.x",
-    "npm": "2.5.x"
+    "npm": "2.x"
   },
   "dependencies": {
     "commander": "^2.9.0",
@@ -47,7 +47,6 @@
     "jshint-stylish": "^1.0",
     "lodash": "^4.10.0",
     "method-override": "^2.3.6",
-    "microservice-framework": "^0.1.0",
     "moment": "^2.12.0",
     "moment-timezone": "^0.5.4",
     "mongoose": "~3.8.8",

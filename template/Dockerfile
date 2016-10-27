@@ -1,4 +1,4 @@
-FROM node:6
+FROM node:0.12.14
 
 ## Install AWS CLI
 RUN apt-get update && apt-get install unzip
