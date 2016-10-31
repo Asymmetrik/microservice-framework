@@ -1,6 +1,6 @@
 {
   "name": "[[ serviceName ]]",
-  "description": "An Node/Express container template for a micro-service.  Please update the name and description.",
+  "description": "An Node/Express container template for a micro-service.  Please update the description and version.",
   "version": "0.1.0",
   "author": "Asymmetrik",
   "private": true,
