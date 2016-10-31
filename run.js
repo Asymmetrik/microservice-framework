@@ -4,13 +4,16 @@ var program = require('commander'),
 	path = require('path'),
 	fs = require('fs'),
 	q = require('q'),
+	checksum = require('checksum'),
 	_ = require('lodash');
 
 
-var stat = q.denodeify(fs.stat);
-var readdir = q.denodeify(fs.readdir);
-var readfile = q.denodeify(fs.readFile);
-var writefile = q.denodeify(fs.writeFile);
+var stat = q.denodeify(fs.stat),
+	readdir = q.denodeify(fs.readdir),
+	readfile = q.denodeify(fs.readFile),
+	writefile = q.denodeify(fs.writeFile),
+	checkdata = q.denodeify(checksum),
+	checkfile = q.denodeify(checksum.file);
 
 function exists(filepath) {
 	return q.when(fs.existsSync(filepath));
@@ -23,7 +26,6 @@ function exists(filepath) {
  */
 function mkdirs(filepath) {
 	if (fs.existsSync(filepath)) {
-		console.log(filepath, '(existing directory)');
 		return q.when(filepath);
 	}
 	// Recursively make any parent directories
@@ -32,7 +34,6 @@ function mkdirs(filepath) {
 			return q.ninvoke(fs, 'mkdir', filepath);
 		})
 		.then(function() {
-			console.log(filepath, '(created directory)');
 			return filepath;
 		});
 }
@@ -66,19 +67,54 @@ function copy(sourcePath, targetPath, options) {
 				if (stats.isFile()) {
 					var mode = stats.mode & 0777;
 
-					// See whether the new file already exists
-					return exists(newfilepath)
-						.then(function(ex) {
-							console.log(newfilepath, ':', ex ? '(overwritten)' : '(created)', 'mode:', mode.toString(8));
-						})
-						// Get the files' contents
+					return q.when()
+
+						// Get the file's contents
 						.then(readfile.bind(null, oldfilepath, 'utf-8'))
 
 						// Replace placeholder variables
 						.then(replaceOptions.bind(null, options))
 
-						// Write to the new location with the same file permissions
+						// See whether the new file already exists and if so, compare
 						.then(function(data) {
+
+							return q.all([
+								data,
+
+								// If the file already exists, get its checksum
+								exists(newfilepath)
+									.then(function(ex) {
+										return ex ? checkfile(newfilepath) : q.when(null);
+									}),
+
+								// Get the checksum of the new data to write
+								checksum(data)
+							]);
+						})
+
+						// Compare the checksums
+						.spread(function(data, prevcs, newcs) {
+
+							// The file does not already exist
+							if (!prevcs) {
+								console.log(newfilepath, ' (creating with mode', mode.toString(8), ')');
+							}
+							// The file has changed
+							else if (prevcs != newcs) {
+								if (options.force) {
+									console.log(newfilepath, ' (overwriting)');
+								}
+								else {
+									console.log(newfilepath, ' (file changed, use --force to overwrite)');
+									return q.when();
+								}
+							}
+							// The file has not changed, so don't bother saving
+							else {
+								return q.when();
+							}
+
+							// Write to the new location with the same file permissions
 							return writefile(newfilepath, data, { mode: mode });
 						});
 				}
@@ -115,14 +151,13 @@ program.version(version);
 program.command('generate <service-name>')
 	.alias('g')
 	.description('Generate a template microservice')
+	.option('-f, --force', 'Force files to be overwritten')
 	.action(function(serviceName) {
 		ran = true;
 		var options = this.opts();
 		options.serviceName = serviceName;
 		options.msfDirectory = path.resolve(__dirname);
 		options.cwdDirectory = path.resolve('.');
-
-		console.log(options);
 
 		return q.when()
 			.then(function() {
