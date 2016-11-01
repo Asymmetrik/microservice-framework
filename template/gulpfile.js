@@ -44,7 +44,7 @@ gulp.task('jshint', function () {
 gulp.task('lint', ['jshint']);
 
 // Build javascript docs
-gulp.task('jsdoc', plugins.shell.task(['./node_modules/.bin/jsdoc ./server.js -c ./jsdoc.json -r']));
+gulp.task('jsdoc', plugins.shell.task(['npm run jsdoc']));
 
 // Lint project files and minify them into two production files.
 gulp.task('build', ['lint', 'jsdoc']);
@@ -106,8 +106,8 @@ gulp.task('test', function(done) {
 		console.log('\t-d\t\t run jsDoc*');
 		console.log('\t-f filename\t run tests for files that match this pattern only');
 		console.log('\t--bail\t\t fail on first error (mocha only)');
-		console.log('\t--nomocks\t\t run with actual services where applicable. This should be run before each deployment.')
-		console.log('\n* if no test suites are specified, all tests will be run.')
+		console.log('\t--nomocks\t\t run with actual services where applicable. This should be run before each deployment.');
+		console.log('\n* if no test suites are specified, all tests will be run.');
 		console.log('---------------------------------------');
 		return;
 	}
@@ -141,9 +141,9 @@ gulp.task('nodemon', function () {
 // Node Inspector
 gulp.task('nodeInspector', function() {
 	gulp.src([ 'server.js' ]).pipe(plugins.nodeInspector({
-		debugPort: config.devPorts.debug,
 		webHost: '0.0.0.0',
-		webPort: config.devPorts.nodeInspector,
+		webPort: msf.config.devPorts.nodeInspector,
+		debugPort: msf.config.devPorts.debug,
 		saveLiveEdit: false,
 		preload: false,
 		hidden: [ new RegExp('node_modules') ],

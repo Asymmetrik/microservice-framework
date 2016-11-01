@@ -12,6 +12,7 @@
     "start": "gulp run | bunyan",
     "test": "gulp test",
     "debug": "gulp debug | bunyan",
+    "build": "gulp build",
     "jsdoc": "jsdoc server.js -c jsdoc.json -r"
   },
   "dependencies": {
