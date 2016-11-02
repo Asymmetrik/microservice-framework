@@ -5,37 +5,17 @@ var program = require('commander'),
 	fs = require('fs'),
 	q = require('q'),
 	checksum = require('checksum'),
-	_ = require('lodash');
-
+	_ = require('lodash'),
+	fileutil = require('./lib/file');
 
 var stat = q.denodeify(fs.stat),
 	readdir = q.denodeify(fs.readdir),
 	readfile = q.denodeify(fs.readFile),
 	writefile = q.denodeify(fs.writeFile),
-	checkdata = q.denodeify(checksum),
 	checkfile = q.denodeify(checksum.file);
 
 function exists(filepath) {
 	return q.when(fs.existsSync(filepath));
-}
-
-/**
- * Create a directory and any of its parent directories that don't already exist.
- * @param {string} filepath The absolute path of the directory
- * @returns {Promise} A promise that returns the filepath
- */
-function mkdirs(filepath) {
-	if (fs.existsSync(filepath)) {
-		return q.when(filepath);
-	}
-	// Recursively make any parent directories
-	return mkdirs(path.dirname(filepath))
-		.then(function() {
-			return q.ninvoke(fs, 'mkdir', filepath);
-		})
-		.then(function() {
-			return filepath;
-		});
 }
 
 /**
@@ -121,7 +101,7 @@ function copy(sourcePath, targetPath, options) {
 				else if (stats.isDirectory()) {
 
 					// Make sure the directory exists in the destination
-					return mkdirs(newfilepath)
+					return fileutil.mkdirs(newfilepath)
 
 						// Get everything in the directory
 						.then(function() {

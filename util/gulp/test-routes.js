@@ -13,6 +13,7 @@ var through = require('through2'),
  * @function test
  * @static
  * @summary Test the routes.
+ * @description
  * Test files are expected to have the following format (you only have to fill in the portions you want to test):
  * module.exports = {
  *     'Route Name': {
