@@ -2,8 +2,7 @@
 
 /** @module util/server/models/user-permissions */
 var _ = require('lodash'),
-    path = require('path'),
-    permissions = require('../../lib/permissions');
+    config = require('../../lib/config');
 
 
 /**
@@ -34,7 +33,7 @@ var parseGroupIds = function parseGroupIds (groups) {
 	} else {
 		return [];
 	}
- };
+};
 
 /**
  * @function isAllowedTo
@@ -47,7 +46,7 @@ var parseGroupIds = function parseGroupIds (groups) {
  * @returns {boolean}
  */
 function isAllowedTo (user, action, groups) {
-  var schemes = permissions.get(),
+  var schemes = config.permissions,
 			allowedRoles = schemes[action],
 			groupIds = parseGroupIds(groups);
 
@@ -115,7 +114,7 @@ function isAllowedTo (user, action, groups) {
  * @returns {Object}
  */
 function getAllowedActions (user) {
-  var schemes = permissions.get();
+  var schemes = config.permissions;
  	var actions = Object.keys(schemes);
  	var toReturn = {};
  	// Check the global permissions
