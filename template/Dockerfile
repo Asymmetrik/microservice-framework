@@ -1,4 +1,4 @@
-FROM node:0.12.14
+FROM node:6
 
 # Install additional packages
 RUN apt-get update && apt-get install -y unzip build-essential && npm install -g npm@3.10

@@ -5,7 +5,7 @@
 /**
  * Module dependencies.
  */
-var logger = require('./lib/bunyan');
+var logger = require('./lib/logger');
 
 /**
  * Export dependencies that can be used by including modules

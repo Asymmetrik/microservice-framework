@@ -5,13 +5,13 @@
   "author": "Asymmetrik",
   "private": true,
   "engines": {
-    "node": "0.12.x",
-    "npm": "2.x"
+    "node": "6.x",
+    "npm": "3.x"
   },
   "scripts": {
-    "start": "gulp run | bunyan",
+    "start": "gulp run",
     "test": "gulp test",
-    "debug": "gulp debug | bunyan",
+    "debug": "gulp debug",
     "build": "gulp build",
     "jsdoc": "jsdoc server.js -c jsdoc.json -r"
   },
