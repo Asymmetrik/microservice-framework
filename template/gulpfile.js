@@ -132,23 +132,10 @@ gulp.task('test', function(done) {
 gulp.task('nodemon', function () {
 	plugins.nodemon({
 		script: 'server.js',
-		nodeArgs: ['--debug=' + msf.config.devPorts.debug],
+		nodeArgs: ['--inspect', '--debug=' + msf.config.devPorts.debug],
 		ext: 'js,html',
 		watch: _.union(msf.config.files.server.allJS, msf.config.files.server.config)
 	});
-});
-
-// Node Inspector
-gulp.task('nodeInspector', function() {
-	gulp.src([ 'server.js' ]).pipe(plugins.nodeInspector({
-		webHost: '0.0.0.0',
-		webPort: msf.config.devPorts.nodeInspector,
-		debugPort: msf.config.devPorts.debug,
-		saveLiveEdit: false,
-		preload: false,
-		hidden: [ new RegExp('node_modules') ],
-		stackTraceLimit: 50
-	}));
 });
 
 // Maildev
