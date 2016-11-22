@@ -23,6 +23,7 @@ module.exports = {
 	query:          require('./util/server/query.server.service.js'),
 	permissions:    require('./util/server/user-permissions.server.service.js'),
 	util:           require('./util/server/util.server.service.js'),
+	getRoutes:      require('./util/server/get-routes.server.service'),
 
 	gulp: {
 		mongo:      require('./util/gulp/mongo-helpers.js'),
