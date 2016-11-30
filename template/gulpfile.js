@@ -28,20 +28,20 @@ var handleError = function handleError(err) {
  */
 
 // JS linting task
-gulp.task('jshint', function () {
+gulp.task('eslint', function () {
 	return gulp.src(
 		_.union(
 			msf.config.files.server.allJS,
 			msf.config.files.tests.server,
 			msf.config.files.tests.e2e
 		))
-		.pipe(plugins.jshint('./.jshintrc'))
-		.pipe(plugins.jshint.reporter('jshint-stylish'))
+		.pipe(plugins.eslint())
+		.pipe(plugins.eslint.format())
 		.on('error', plugins.util.log);
 });
 
 // Lint JavaScript files.
-gulp.task('lint', ['jshint']);
+gulp.task('lint', ['eslint']);
 
 // Build javascript docs
 gulp.task('jsdoc', plugins.shell.task(['npm run jsdoc']));
@@ -149,7 +149,7 @@ gulp.task('maildev', function() {
 // Watch Files For Changes
 gulp.task('watch', function() {
 	// Add watch rules
-	gulp.watch(msf.config.files.server.allJS, ['jshint']);
+	gulp.watch(msf.config.files.server.allJS, ['lint']);
 });
 
 // Run the project in debug mode (you still need to manually set NODE_ENV)
