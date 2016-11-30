@@ -15,10 +15,7 @@ msf.mongoose.connect().then(function (db) {
 	msf.logger.info('Mongoose connected, proceeding with application configuration');
 
 	// Initialize express
-	var app = msf.express.init(db);
-
-	// Initialize the error routes last, after all routes have been created
-	msf.express.initErrorRoutes(app);
+	var app = msf.express.init({});
 
 	// Start the app by listening on <port>
 	app.listen(msf.config.port);
