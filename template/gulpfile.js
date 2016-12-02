@@ -132,7 +132,11 @@ gulp.task('test', function(done) {
 gulp.task('nodemon', function () {
 	plugins.nodemon({
 		script: 'server.js',
-		nodeArgs: ['--inspect', '--debug=' + msf.config.devPorts.debug],
+		nodeArgs: [
+			'--inspect',
+//			'--debug-brk',
+			'--debug=' + msf.config.devPorts.debug
+		],
 		ext: 'js,html',
 		watch: _.union(msf.config.files.server.allJS, msf.config.files.server.config)
 	});
