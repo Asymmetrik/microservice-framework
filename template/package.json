@@ -25,7 +25,7 @@
     "gulp-shell": "^0.5.2",
     "gulp-util": "^3.0.7",
     "jsdoc": "^3.4.0",
-    "microservice-framework": "https://bitbucket.org/medstarcportal/microservice-framework.git#features/cm-805-setup",
+    "microservice-framework": "https://bitbucket.org/medstarcportal/microservice-framework.git",
     "var": "^0.2.0"
   },
   "devDependencies": {
