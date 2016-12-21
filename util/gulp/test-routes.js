@@ -49,8 +49,8 @@ var through = require('through2'),
  */
 module.exports = function(silent) {
 	var totalNumberOfErrors = 0;
-	var config = require(path.resolve('../../lib/config'));
-	var mongooseObj = require(path.resolve('../../lib/mongoose'));
+	var config = require(path.resolve('./lib/config'));
+	var mongooseObj = require(path.resolve('./lib/mongoose'));
 	var mongoosePromise = mongooseObj.connect();
 	return through.obj(function(vinylFile, encoding, next) {
 		mongoosePromise.then(function() {
