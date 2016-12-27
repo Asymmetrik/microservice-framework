@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-var _ = require('lodash'),
+let _ = require('lodash'),
 	q = require('q'),
 	path = require('path'),
 	runSequence = require('run-sequence'),
@@ -12,7 +12,8 @@ var _ = require('lodash'),
 	gulp = require('gulp'),
 	plugins = require('gulp-load-plugins')(),
 	argv = require('yargs').argv,
-	msf = require('microservice-framework');
+	msf = require('microservice-framework'),
+	logger = msf.logger;
 
 /**
  * Print the error to console and exit(-1)
@@ -76,20 +77,29 @@ gulp.task('mocha', ['env:test'], function (done) {
 			}))
 			.on('error', handleError)
 			.on('end', function() {
-				mongoose.disconnect().then(done);
+				mongoose.disconnect(done);
 			});
 	}).catch(handleError);
 });
 
 // Run the route tests
-gulp.task('test-routes', ['env:test'], function() {
+gulp.task('test-routes', ['env:test'], function(done) {
 	var testRoutes = msf.gulp.testRoutes;
 	var sources = argv.f ? [ 'app/*/server/routes/*' + argv.f ] : msf.config.files.tests.routes;
 	var expect = require('gulp-expect-file');
 
-	return gulp.src(sources)
-		.pipe(expect(sources))
-		.pipe(testRoutes(argv.silent));
+	var mongoose = msf.mongoose;
+
+	mongoose.connect().then(function() {
+		return gulp.src(sources)
+			.pipe(expect(sources))
+			.pipe(testRoutes(argv.silent));
+	}).then(function(result) {
+		mongoose.disconnect(done);
+	}).catch(function(err) {
+		logger.error(err);
+		mongoose.disconnect(done);
+	});
 });
 
 
