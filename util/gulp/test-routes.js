@@ -172,6 +172,7 @@ module.exports = function(silent) {
 						if (test.user) req.user = test.user;
 						if (test.get) req.get = test.get;
 						if (test.accepts) req.accepts = test.accepts;
+						if (test.session) req.session = test.session;
 						util.testRoute(file, routeName, routeType, test.paramArgs || [], req, function(error, response) {
 							_.extend(config, originalConfig);
 							if (error && !_.isEqual(test.error, error)) {
