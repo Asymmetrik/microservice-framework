@@ -27,6 +27,7 @@ exports.generateRequest = function(userId) {
 			body: {},
 			params: {},
 			query: {},
+			session: {},
 			isAuthenticated: function() { return this.user !== null; },
 			user: user,
 			logout: function() {},
