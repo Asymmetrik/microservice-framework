@@ -17,6 +17,7 @@ module.exports = {
 	mongoose:       require('./lib/mongoose'),
 	express:        require('./lib/express'),
 	file:           require('./lib/file'),
+	services:       require('./lib/services'),
 
 	csvStream:      require('./util/server/csv-stream.server.service.js'),
 	date:           require('./util/server/date.server.service.js'),

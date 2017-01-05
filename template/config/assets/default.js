@@ -12,7 +12,8 @@ module.exports = {
 		allJS: ['gulpfile.js', 'server.js', 'config/**/*.js', 'app/*/server/**/*.js'],
 		models: 'app/*/server/models/**/*.js',
 		routes: 'app/*/server/routes/**/*.js',
-		config: 'app/*/server/config/*.js'
+		config: 'app/*/server/config/*.js',
+		services: 'app/*/server/services/**/*.js'
 	},
 	tests: {
 		server: ['app/*/tests/server/**/*.js'],
