@@ -245,6 +245,9 @@ module.exports = function(silent) {
 			++totalNumberOfErrors;
 			gutil.log('error encountered while mocking the routes in ' + fileName, err);
 		}).done(function() {
+			if (totalNumberOfErrors) {
+				gutil.log('Total number of errors: ' + totalNumberOfErrors);
+			}
 			next(null, vinylFile);
 		});
 	});

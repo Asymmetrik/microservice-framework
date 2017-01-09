@@ -5,12 +5,7 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-	_ = require('lodash'),
-	path = require('path'),
-	q = require('q'),
-	should = require('should'),
-
+let should = require('should'),
 	queryService = require('../../main').query;
 
 /**
@@ -21,29 +16,29 @@ describe('Query Server Service Tests:', function() {
 
 	it('should format parameters', function(done) {
 		// Test ObjectId conversion
-		var param1 = queryService.formatQueryParam({ project: {value: '5702c24b41ef4dce67d2dfba', dataType: 'ObjectId'}});
+		let param1 = queryService.formatQueryParam({ project: {value: '5702c24b41ef4dce67d2dfba', dataType: 'ObjectId'}});
 		param1.project._bsontype.should.equal('ObjectID');
 		param1.project.toString().should.equal('5702c24b41ef4dce67d2dfba');
 
 		// Test Date conversion
-		var date = new Date();
-		var param2 = queryService.formatQueryParam({ created: { $gte: {value: date.toString(), dataType: 'date'} } });
+		let date = new Date();
+		let param2 = queryService.formatQueryParam({ created: { $gte: {value: date.toString(), dataType: 'date'} } });
 		param2.created.$gte.getMonth().should.equal(date.getMonth());
 		param2.created.$gte.getDate().should.equal(date.getDate());
 		param2.created.$gte.getFullYear().should.equal(date.getFullYear());
 		param2.created.$gte.getMinutes().should.equal(date.getMinutes());
 
 		// Test direct number value
-		var param3 = queryService.formatQueryParam({blah: 1});
+		let param3 = queryService.formatQueryParam({blah: 1});
 		param3.blah.should.equal(1);
 
 		// Test direct string value
-		var param4 = queryService.formatQueryParam({blah: 'whee'});
+		let param4 = queryService.formatQueryParam({blah: 'whee'});
 		param4.blah.should.equal('whee');
 
 		// Test nested query params with date, and objectID conversions
-		var startDate = new Date(date.getDate()-5);
-		var param5 = queryService.formatQueryParam({
+		let startDate = new Date(date.getDate()-5);
+		let param5 = queryService.formatQueryParam({
 			$and: [
 				{ created: { $gte: { value: new Date(startDate).toString(), dataType: 'date'} } },
 				{ created: { $lt: { value: date.toString(), dataType: 'date' } } },
@@ -62,21 +57,21 @@ describe('Query Server Service Tests:', function() {
 		param5.$and[2].project.toString().should.equal('5702c24b41ef4dce67d2dfba');
 
 		// Test empty object
-		var param6 = queryService.formatQueryParam({});
+		let param6 = queryService.formatQueryParam({});
 		(typeof param6).should.equal('object');
 		Object.keys(param6).length.should.equal(0);
 
 		// Test null object
-		var param7 = queryService.formatQueryParam();
+		let param7 = queryService.formatQueryParam();
 		(param7 === null).should.equal(true);
 
 		// Null value
-		var param8 = queryService.formatQueryParam({testing: null});
+		let param8 = queryService.formatQueryParam({testing: null});
 		(param8 === null).should.equal(true);
 
 		// Test invalid date
 		try {
-			var param9 = queryService.formatQueryParam({ project: {value: {whatever: 1}, dataType: 'date'}});
+			queryService.formatQueryParam({ project: {value: {whatever: 1}, dataType: 'date'}});
 		}
 		catch(err) {
 			err.message.should.equal('Invalid Date');
@@ -84,7 +79,7 @@ describe('Query Server Service Tests:', function() {
 
 		// Test invalid ObjectID
 		try {
-			var param10 = queryService.formatQueryParam({ project: {value: {whatever: 1}, dataType: 'ObjectId'}});
+			queryService.formatQueryParam({ project: {value: {whatever: 1}, dataType: 'ObjectId'}});
 		}
 		catch(err) {
 			err.message.should.equal('Argument passed in must be a single String of 12 bytes or a string of 24 hex characters');
@@ -95,19 +90,19 @@ describe('Query Server Service Tests:', function() {
 
 	it('should delete dangerous mongo query keys', function(done) {
 		// Test blacklisted phrase '$where'
-		var param1 = queryService.formatQueryParam({ $where: 'stuff' });
+		let param1 = queryService.formatQueryParam({ $where: 'stuff' });
 		(param1 === null).should.equal(true);
 
 		// Test blacklisted phrase 'mapReduce'
-		var param2 = queryService.formatQueryParam({ mapReduce: 'stuff' });
+		let param2 = queryService.formatQueryParam({ mapReduce: 'stuff' });
 		(param2 === null).should.equal(true);
 
 		// Test blacklisted phrase 'group'
-		var param3 = queryService.formatQueryParam({ group: 'stuff' });
+		let param3 = queryService.formatQueryParam({ group: 'stuff' });
 		(param3 === null).should.equal(true);
 
 		// Test nested query with dangerous keys
-		var param4 = queryService.formatQueryParam({
+		let param4 = queryService.formatQueryParam({
 			$or: [
 				{$and: [
 					{ test: 1 },

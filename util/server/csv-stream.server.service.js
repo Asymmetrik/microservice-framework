@@ -3,7 +3,6 @@
 /** @module util/services/csvstream */
 
 var through2 = require('through2'),
-	path = require('path'),
 	stringify = require('csv-stringify'),
 	jsonpath = require('JSONPath'),
 	pipe = require('multipipe'),
@@ -40,13 +39,13 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 	res.set('Content-Type', 'text/csv;charset=utf-8');
 	res.set('Content-Disposition', 'attachment;filename=' + filename);
 	res.set('Transfer-Encoding', 'chunked');
-	
+
 	// Buffer the stream if we have a delay
 	var curStream = stream;
 	if(delay && delay > 0) {
 		// Store all the active timeouts
 		var timeouts = [];
-		
+
 		// Flush function: wait until all the timeouts are done before we forward the finish command
 		var onFlush = function(callback) {
 			// If there are still pending requests, check again soon
@@ -60,7 +59,7 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 				callback();
 			}
 		};
-		
+
 		// Create a stream that applies a timeout to each payload.
 		var delayStream = through2.obj(function (chunk, enc, callback) {
 			// After a delay, pass the chunk on to the next stream handler
@@ -79,11 +78,11 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 			});
 			timeouts = [];
 		});
-		
+
 		// Buffer the stream to lower its execution priority
 		curStream = stream.pipe(delayStream);
 	}
-	
+
 	// If an error occurs, close the stream
 	stream.on('error', function(err) {
 		logger.error(err, 'CSV export error occurred');

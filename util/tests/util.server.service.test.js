@@ -5,10 +5,7 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-	_ = require('lodash'),
-	path = require('path'),
-	q = require('q'),
+var	path = require('path'),
 	should = require('should'),
 
 	deps = require(path.resolve('./config/dependencies.js')),

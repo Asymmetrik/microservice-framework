@@ -51,6 +51,6 @@ exports.createCollection = function(collectionName) {
  */
 exports.readFile = function(filePath) {
 	return q.ninvoke(fs, 'readFile', filePath, 'utf-8').fail(function(err) {
-    	gutil.log('failed to read ' + filePath + ' - ' + err);
-    });
+		gutil.log('failed to read ' + filePath + ' - ' + err);
+	});
 };

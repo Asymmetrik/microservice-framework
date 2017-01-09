@@ -3,9 +3,7 @@
 /** @module util/services/util */
 
 var mongoose = require('mongoose'),
-	path = require('path'),
 	_ = require('lodash'),
-	q = require('q'),
 	moment = require('moment-timezone'),
 	config = require('../../lib/config');
 

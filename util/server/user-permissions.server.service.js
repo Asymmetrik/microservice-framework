@@ -2,7 +2,7 @@
 
 /** @module util/server/models/user-permissions */
 var _ = require('lodash'),
-    config = require('../../lib/config');
+	config = require('../../lib/config');
 
 
 /**
@@ -42,7 +42,7 @@ var parseGroupIds = function parseGroupIds (groups) {
  * @param user {User} User object or Model
  * @param action {string} Action to be performed
  * @param [groups] {string|object|string[]|object[]} Groups contain an _id and roles, see if this group
- 					can perform the action
+					can perform the action
  * @returns {boolean}
  */
 function isAllowedTo (user, action, groups) {
@@ -115,19 +115,19 @@ function isAllowedTo (user, action, groups) {
  */
 function getAllowedActions (user) {
   var schemes = config.permissions;
- 	var actions = Object.keys(schemes);
- 	var toReturn = {};
- 	// Check the global permissions
- 	toReturn.global = _.filter(actions, function (a) { return isAllowedTo(user, a); });
- 	// Filter actions that have group permissions
- 	var actionsWithGroups = _.filter(actions, function (a) { return schemes[a].group; });
- 	// an then check the group permissions
- 	toReturn.group = _.reduce(user.groups, function (result, group) {
- 		result[group._id] = _.filter(actionsWithGroups, function (fa) { return isAllowedTo(user, fa, group._id); });
- 		return result;
- 	}, {});
+	var actions = Object.keys(schemes);
+	var toReturn = {};
+	// Check the global permissions
+	toReturn.global = _.filter(actions, function (a) { return isAllowedTo(user, a); });
+	// Filter actions that have group permissions
+	var actionsWithGroups = _.filter(actions, function (a) { return schemes[a].group; });
+	// an then check the group permissions
+	toReturn.group = _.reduce(user.groups, function (result, group) {
+		result[group._id] = _.filter(actionsWithGroups, function (fa) { return isAllowedTo(user, fa, group._id); });
+		return result;
+	}, {});
 
- 	return toReturn;
+	return toReturn;
 }
 
 module.exports = {
