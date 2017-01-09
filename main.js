@@ -24,7 +24,7 @@ module.exports = {
 	permissions:    require('./util/server/user-permissions.server.service.js'),
 	util:           require('./util/server/util.server.service.js'),
 	getRoutes:      require('./util/server/get-routes.server.service'),
-
+	proxyquire:     require('./util/server/proxyquire.server.service'),
 	gulp: {
 		mongo:      require('./util/gulp/mongo-helpers.js'),
 		testRoutes: require('./util/gulp/test-routes.js')
