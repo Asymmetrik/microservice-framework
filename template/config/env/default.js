@@ -25,16 +25,15 @@ module.exports = {
 	auth: {
 		strategy: 'local',
 
-		// header setting is only required for proxy-pki
-		//strategy: 'proxy-pki',
-		//header: 'x-ssl-client-s-dn',
-
 		// Session settings are required regardless of auth strategy
 		sessionSecret: env.SESSION_SECRET,
 		sessionCollection: 'sessions',
 		sessionCookie: {
 			maxAge: 60 * 60 * 24 * 1000	// 24 hours
-		}
+		},
+		resave: true,
+		saveUninitialized: true,
+		rolling: true
 	},
 
 	dateFormat: 'YYYY-MM-DD',
