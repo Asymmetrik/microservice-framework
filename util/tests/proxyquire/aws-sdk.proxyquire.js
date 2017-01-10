@@ -1,12 +1,12 @@
 
-let _ = require('lodash'),
-	sinon = require('sinon');
-
 module.exports = {
-	'aws-sdk': getAwsSdkMock()
+	'aws-sdk': getAwsSdkMock
 };
 
 function getAwsSdkMock() {
+	let _ = require('lodash'),
+		sinon = require('sinon');
+
 	let awsObjects = {};
 	let s3Stub = {};
 

@@ -1,6 +1,6 @@
 
 module.exports = {
-	'nodemailer': getNodemailerMock()
+	'nodemailer': getNodemailerMock
 };
 
 function getNodemailerMock() {

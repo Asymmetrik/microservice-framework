@@ -9,7 +9,8 @@ var path = require('path'),
 	logger = require('../../../lib/logger').logger;
 
 exports.testingDependencies = [];
-exports.mockServices = {};
+exports.mockServiceRegistry = {};
+let mockServices = {};
 
 exports.getDependencyList = function(filePath) {
 	var dependency = require(path.resolve(filePath));
@@ -41,7 +42,7 @@ exports.mockFile = function(filePath, proxyAccessMethods) {
 		var key = dependency;
 		var options = exports.getExternalMock(key);
 
-		// This is not an external mock, must be a campfire file.
+		// This is not an external mock, must be a file.
 		if (!options) {
 			key = path.resolve(dependency);
 			options = exports.mockFile(dependency, proxyAccessMethods);
@@ -61,15 +62,27 @@ exports.mockFile = function(filePath, proxyAccessMethods) {
 	return ret;
 };
 
-exports.getExternalMock = function(name) {
-	return exports.mockServices[name];
+exports.getExternalMock = function(name, reload) {
+	let returnedMock = null;
+	if (exports.mockServiceRegistry[name]){
+		returnedMock = exports.mockServiceRegistry[name];
+	}
+	if (!exports.mockServiceRegistry[name] || reload) {
+		try {
+			exports.mockServiceRegistry[name] = mockServices[name]();
+			returnedMock = exports.mockServiceRegistry[name];
+		}
+		catch (err) {
+			logger.error(`Failed to retrieve external mock: ${name}`);
+		}
+	}
+	return returnedMock;
 };
 
 function initProxyquire() {
-	exports.mockServices = {};
-	if (config.files.server.proxyquire) {
-		_.each(config.files.server.proxyquire, function(file) {
-			_.assign(exports.mockServices, require(path.resolve(file)));
+	if (config.files.tests.proxyquire) {
+		_.each(config.files.tests.proxyquire, function(file) {
+			_.assign(mockServices, require(path.resolve(file)));
 		});
 	}
 }

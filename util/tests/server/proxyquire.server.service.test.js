@@ -14,6 +14,8 @@ let	should = require('should'),
 
 describe('Proxyquire Service Unit Tests:', function() {
 
+
+
 	it('should get mock path', function(done) {
 		let test = proxyquireService.getMockPath('./util/server/services/util.server.service.js');
 		test.should.equal('./util/tests/server/mocks/util.server.service.mock.js');
@@ -23,6 +25,19 @@ describe('Proxyquire Service Unit Tests:', function() {
 	it('should be able to get an external mock', function(done) {
 		let test = proxyquireService.getExternalMock('nodemailer');
 		should.exist(test.createTransport); // this is the right service;
+		should.exist(test.proxyAccessMethods); // this is the mocked version of the service;
+		done();
+	});
+
+	beforeEach(function(done) {
+		proxyquireService.mockServiceRegistry = {};
+		done();
+	});
+
+	it('should lazy load external mocks', function(done) {
+		let test = proxyquireService.mockServiceRegistry['nodemailer'];
+		should.not.exist(test); // this is the right service;
+		test = proxyquireService.getExternalMock('nodemailer');
 		should.exist(test.proxyAccessMethods); // this is the mocked version of the service;
 		done();
 	});
