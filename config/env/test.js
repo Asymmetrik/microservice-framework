@@ -10,5 +10,8 @@
 module.exports = {
 	mongoose: {
 		debug: true
+	},
+	log: {
+		level: 'crit'
 	}
 };

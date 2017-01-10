@@ -13,5 +13,8 @@ module.exports = {
 	mongoose: {
 		debug: true
 	},
-	db:  'mongodb://localhost/' + env.MONGO_DATABASE
+	db:  'mongodb://localhost/' + env.MONGO_DATABASE,
+	log: {
+		level: 'crit'
+	}
 };
