@@ -5,11 +5,8 @@
 /**
  * Module dependencies.
  */
-var	path = require('path'),
-	should = require('should'),
-
-	deps = require(path.resolve('./config/dependencies.js')),
-	util = deps.utilService;
+var	should = require('should'),
+	util = require('../../main').util;
 
 /**
  * Tests

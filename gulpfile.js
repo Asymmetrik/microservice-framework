@@ -55,6 +55,12 @@ gulp.task('env:test', function (done) {
 	done();
 });
 
+// Set NODE_ENV to 'test'
+gulp.task('env:localtest', function (done) {
+	process.env.NODE_ENV = 'localtest';
+	done();
+});
+
 // Mocha tests task
 gulp.task('mocha', ['env:test'], function (done) {
 	// Open mongoose connections
@@ -88,6 +94,7 @@ gulp.task('test', function(done) {
 		logger.info('\t-h, --help\t output usage information');
 		logger.info('\t-m\t\t run mocha tests*');
 		logger.info('\t-d\t\t run jsDoc*');
+		logger.info('\t-l\t\t run tests locally*');
 		logger.info('\t-f filename\t run tests for files that match this pattern only');
 		logger.info('\t--bail\t\t fail on first error (mocha only)');
 		logger.info('\t--nomocks\t\t run with actual services where applicable. This should be run before each deployment.');
@@ -96,7 +103,7 @@ gulp.task('test', function(done) {
 		return;
 	}
 
-	var sequence = ['env:test'];
+	var sequence = argv.l? ['env:localtest']:['env:test'];
 
 	var specifiedTestSuites = argv.m || argv.r ||argv.k || argv.p;
 	if (!specifiedTestSuites) { sequence.push('lint'); }

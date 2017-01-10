@@ -10,7 +10,7 @@
 module.exports = {
 	server: {
 		allJS: ['gulpfile.js', 'main.js', 'run.js', 'config/**/*.js', 'lib/**/*.js', 'util/**/*.js'],
-		proxyquire: ['util/server/proxyquire/**/*.js']
+		proxyquire: ['util/tests/proxyquire/**/*.js']
 	},
 	tests: {
 		server: ['util/tests/**/*.js']
