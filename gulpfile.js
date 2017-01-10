@@ -49,20 +49,9 @@ gulp.task('build', ['lint', 'jsdoc']);
  * Test tasks
  */
 
-// Set NODE_ENV to 'test'
-gulp.task('env:test', function (done) {
-	process.env.NODE_ENV = 'test';
-	done();
-});
-
-// Set NODE_ENV to 'test'
-gulp.task('env:localtest', function (done) {
-	process.env.NODE_ENV = 'localtest';
-	done();
-});
 
 // Mocha tests task
-gulp.task('mocha', ['env:test'], function (done) {
+gulp.task('mocha', function (done) {
 	// Open mongoose connections
 	var mongoose = msf.mongoose;
 
@@ -103,7 +92,7 @@ gulp.task('test', function(done) {
 		return;
 	}
 
-	var sequence = argv.l? ['env:localtest']:['env:test'];
+	var sequence = [];// argv.l? ['env:localtest']:['env:test'];
 
 	var specifiedTestSuites = argv.m || argv.r ||argv.k || argv.p;
 	if (!specifiedTestSuites) { sequence.push('lint'); }

@@ -6,7 +6,7 @@ var through2 = require('through2'),
 	stringify = require('csv-stringify'),
 	jsonpath = require('JSONPath'),
 	pipe = require('multipipe'),
-	logger = require('../../lib/logger').logger;
+	logger = require('../../lib/logger');
 
 /**
  * @function csv-stream

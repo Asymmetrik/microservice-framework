@@ -21,7 +21,6 @@ module.exports = {
 	csvStream:      require('./util/server/csv-stream.server.service.js'),
 	date:           require('./util/server/date.server.service.js'),
 	query:          require('./util/server/query.server.service.js'),
-	permissions:    require('./util/server/user-permissions.server.service.js'),
 	util:           require('./util/server/util.server.service.js'),
 	getRoutes:      require('./util/server/get-routes.server.service'),
 	proxyquire:     require('./util/server/proxyquire.server.service'),
