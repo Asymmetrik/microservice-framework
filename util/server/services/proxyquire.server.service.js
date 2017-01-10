@@ -9,7 +9,7 @@ var path = require('path'),
 	logger = require('../../../lib/logger').logger;
 
 exports.testingDependencies = [];
-exports.mockServiceRegistry = {};
+let mockServiceRegistry = {};
 let mockServices = {};
 
 exports.getDependencyList = function(filePath) {
@@ -63,20 +63,19 @@ exports.mockFile = function(filePath, proxyAccessMethods) {
 };
 
 exports.getExternalMock = function(name, reload) {
-	let returnedMock = null;
-	if (exports.mockServiceRegistry[name]){
-		returnedMock = exports.mockServiceRegistry[name];
+	if (mockServiceRegistry[name]){
+		return mockServiceRegistry[name];
 	}
-	if (!exports.mockServiceRegistry[name] || reload) {
+	if (!mockServiceRegistry[name] || reload) {
 		try {
-			exports.mockServiceRegistry[name] = mockServices[name]();
-			returnedMock = exports.mockServiceRegistry[name];
+			mockServiceRegistry[name] = mockServices[name]();
+			return mockServiceRegistry[name];
 		}
 		catch (err) {
 			logger.error(`Failed to retrieve external mock: ${name}`);
+			return null;
 		}
 	}
-	return returnedMock;
 };
 
 function initProxyquire() {

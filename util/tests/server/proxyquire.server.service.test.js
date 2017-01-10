@@ -29,19 +29,6 @@ describe('Proxyquire Service Unit Tests:', function() {
 		done();
 	});
 
-	beforeEach(function(done) {
-		proxyquireService.mockServiceRegistry = {};
-		done();
-	});
-
-	it('should lazy load external mocks', function(done) {
-		let test = proxyquireService.mockServiceRegistry['nodemailer'];
-		should.not.exist(test); // this is the right service;
-		test = proxyquireService.getExternalMock('nodemailer');
-		should.exist(test.proxyAccessMethods); // this is the mocked version of the service;
-		done();
-	});
-
 	it('should be able to mock an external module from a separate controller', function(done) {
 		let utilService = proxyquireService.mockFile('./util/server/services/util.server.service.js');
 		utilService.testingDependencies.length.should.equal(2);
