@@ -6,7 +6,7 @@
  * Module dependencies.
  */
 var	should = require('should'),
-	util = require('../../main').util;
+	util = require('../../../main').util;
 
 /**
  * Tests

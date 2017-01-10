@@ -6,7 +6,7 @@
  * Module dependencies.
  */
 let should = require('should'),
-	queryService = require('../../main').query;
+	queryService = require('../../../main').query;
 
 /**
  * Tests

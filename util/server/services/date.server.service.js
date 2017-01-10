@@ -3,7 +3,7 @@
 /** @module util/services/date */
 
 var moment = require('moment'),
-	config = require('../../lib/config');
+	config = require('../../../lib/config');
 
 /**
  * parseDate

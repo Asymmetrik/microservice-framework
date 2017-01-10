@@ -18,12 +18,12 @@ module.exports = {
 	express:        require('./lib/express'),
 	file:           require('./lib/file'),
 
-	csvStream:      require('./util/server/csv-stream.server.service.js'),
-	date:           require('./util/server/date.server.service.js'),
-	query:          require('./util/server/query.server.service.js'),
-	util:           require('./util/server/util.server.service.js'),
-	getRoutes:      require('./util/server/get-routes.server.service'),
-	proxyquire:     require('./util/server/proxyquire.server.service'),
+	csvStream:      require('./util/server/services/csv-stream.server.service.js'),
+	date:           require('./util/server/services/date.server.service.js'),
+	query:          require('./util/server/services/query.server.service.js'),
+	util:           require('./util/server/services/util.server.service.js'),
+	getRoutes:      require('./util/server/services/get-routes.server.service.js'),
+	proxyquire:     require('./util/server/services/proxyquire.server.service.js'),
 	gulp: {
 		mongo:      require('./util/gulp/mongo-helpers.js'),
 		testRoutes: require('./util/gulp/test-routes.js')

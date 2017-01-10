@@ -5,8 +5,8 @@
 var path = require('path'),
 	_ = require('lodash'),
 	proxyquire = require('proxyquire'),
-	config = require('../../lib/config'),
-	logger = require('../../lib/logger').logger;
+	config = require('../../../lib/config'),
+	logger = require('../../../lib/logger').logger;
 
 exports.testingDependencies = [];
 exports.mockServices = {};

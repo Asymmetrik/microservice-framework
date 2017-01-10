@@ -5,7 +5,12 @@
 var mongoose = require('mongoose'),
 	_ = require('lodash'),
 	moment = require('moment-timezone'),
-	config = require('../../lib/config');
+	config = require('../../../lib/config');
+
+exports.testingDependencies = [
+	'./util/server/services/date.server.service.js',
+	'aws-sdk'
+];
 
 /**
  * @summary Catch any errors otherwise execute callback
