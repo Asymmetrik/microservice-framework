@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
  * @returns {Promise}
  */
 exports.saveModel = function(model) {
-	return q.ninvoke(model, 'save').then(function() {
+	return model.save().then(function() {
 		gutil.log('saved ' + model.constructor.modelName + ': ' + (model.name || model.slug || model._id));
 	});
 };
