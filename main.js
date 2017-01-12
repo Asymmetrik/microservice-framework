@@ -10,8 +10,9 @@ var logger = require('./lib/logger');
 /**
  * Export dependencies that can be used by including modules
  */
+
 module.exports = {
-	namespace:      require('./lib/namespace')(require('./.spaces.js'), __dirname),
+	namespace:      require('./lib/namespace').instance(require('./.spaces.js')),
 	logger:         logger.logger,
 	auditLogger:    logger.auditLogger,
 	config:         require('./lib/config'),
