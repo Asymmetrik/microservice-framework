@@ -12,7 +12,7 @@ var logger = require('./lib/logger');
  */
 
 module.exports = {
-	namespace:      require('./lib/namespace').instance(require('./.spaces.js')),
+	namespace:      require('namespacer-js').instance(require('./.spaces.js')),
 	logger:         logger.logger,
 	auditLogger:    logger.auditLogger,
 	config:         require('./lib/config'),
