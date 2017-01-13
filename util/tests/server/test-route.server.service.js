@@ -134,13 +134,13 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 	 * @inner
 	 * @summary Simulates express routing functionality
 	 * @param defer {Promise} The promise to resolve once all the functions have been called for the route
-	 * @param req {Object} The request object
+	 * @param request {Object} The request object
 	 * @param res {Object} The response object
 	 * @param index {Integer} The index for the function we need to call
 	 * @param functions {Array} The array of functions for the route
 	 * @param err {Object} The error object
 	 */
-	const mockRoute = function(defer, req, res, index, functions, err) {
+	const mockRoute = function(defer, request, res, index, functions, err) {
 		if (err) return defer.reject(err);
 		if (!functions[index]) return defer.reject(new Error('next called at the end of the route'));
 		const responseSent = function(resp) {
@@ -156,7 +156,7 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 		res.end = responseSent;
 		res.redirect = responseSent;
 		try {
-			functions[index](req, res, mockRoute.bind(null, defer, req, res, index + 1, functions));
+			functions[index](request, res, mockRoute.bind(null, defer, request, res, index + 1, functions));
 		}
 		catch(e) {
 			defer.reject(e);
@@ -166,13 +166,13 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 	 * @inner
 	 * @summary Simulates express param middleware functionality
 	 * @param defer {Promise} The promise to resolve once all the functions have been called for the middleware
-	 * @param req {Object} The request object
+	 * @param request {Object} The request object
 	 * @param res {Object} The response object
 	 * @param index {Integer} The index for the function we need to call
 	 * @param params {Array} The array of parameter functions for the middleware
 	 * @param paramIds {Array} The array of the parameter values
 	 */
-	const mockParams = function(defer, req, res, index, params, paramIds) {
+	const mockParams = function(defer, request, res, index, params, paramIds) {
 		if (index === params.length) return defer.resolve();
 		const funcDefer = q.defer();
 		if (params[index]) {
@@ -180,7 +180,7 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 			const mockParamRoute = function(paramIndex, err) {
 				if (err) return funcDefer.reject(err);
 				if (params[index].length === paramIndex) return funcDefer.resolve();
-				params[index][paramIndex](req, res, mockParamRoute.bind(null, paramIndex + 1), paramIds[index]);
+				params[index][paramIndex](request, res, mockParamRoute.bind(null, paramIndex + 1), paramIds[index]);
 			};
 			// 0 is the name of the param, so we skip that
 			mockParamRoute(1);
@@ -190,7 +190,7 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 			funcDefer.resolve();
 		}
 		funcDefer.promise.then(function() {
-			mockParams(defer, req, res, index + 1, params, paramIds);
+			mockParams(defer, request, res, index + 1, params, paramIds);
 		}).fail(function(err) {
 			defer.reject(err);
 		});

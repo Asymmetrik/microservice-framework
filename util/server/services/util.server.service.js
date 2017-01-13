@@ -50,8 +50,8 @@ exports.simplifyErrors = function(err) {
  */
 exports.getErrorDetails = function(err) {
 	return _.chain(err)
-		.map(function(err) {
-			return err.errorTag ? err.errorTag + ': ' + err.message : err.message;
+		.map(function(error) {
+			return error.errorTag ? error.errorTag + ': ' + error.message : error.message;
 		})
 		.uniq()
 		.value()

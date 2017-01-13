@@ -50,12 +50,12 @@ const through = require('through2'),
 module.exports = function(silent) {
 	let totalNumberOfErrors = 0;
 	const config = require('../../lib/config');
-	return through.obj(function(vinylFile, encoding, next) {
+	return through.obj(function(vinylFile, encoding, callback) {
 		// load the file
 		const util = require('../tests/test-route.server.service.js');
 		const file = require(vinylFile.path);
 		if (!file) {
-			return next(null, vinylFile);
+			return callback(null, vinylFile);
 		}
 		const fileName = vinylFile.path.substring(vinylFile.path.lastIndexOf('/') + 1);
 		// load the test
@@ -230,7 +230,7 @@ module.exports = function(silent) {
 		catch(err) {
 			gutil.log('error encountered trying parse ' + fileName, err);
 			++totalNumberOfErrors;
-			next(null, vinylFile);
+			callback(null, vinylFile);
 		}
 		const routesPromise = q.defer();
 		if (_.isEmpty(testFile)) {
@@ -248,7 +248,7 @@ module.exports = function(silent) {
 			if (totalNumberOfErrors) {
 				gutil.log('Total number of errors: ' + totalNumberOfErrors);
 			}
-			next(null, vinylFile);
+			callback(null, vinylFile);
 		});
 	});
 };
