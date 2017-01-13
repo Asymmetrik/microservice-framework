@@ -72,6 +72,10 @@ exports.getExternalMock = function(name, reload) {
 		return mockServiceRegistry[name];
 	}
 	if (!mockServiceRegistry[name] || reload) {
+		if (!mockServices[name]) {
+			logger.error(`External mock ${name} was not registered with the proxyquire service.`);
+			return null;
+		}
 		try {
 			mockServiceRegistry[name] = mockServices[name]();
 			return mockServiceRegistry[name];
