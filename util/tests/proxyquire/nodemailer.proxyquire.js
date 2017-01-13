@@ -4,7 +4,7 @@ module.exports = {
 };
 
 function getNodemailerMock() {
-	var mailErrors = {};
+	let mailErrors = {};
 	return {
 		createTransport: function(options) {
 			return {

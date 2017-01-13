@@ -7,7 +7,7 @@
  *   This is a modified version of the get-routes NPM module that also exposes nested router info
  */
 
-var _ = require('lodash');
+const _ = require('lodash');
 
 module.exports.getRoutes = function getRoutes(app) {
 	if (!app) {
@@ -16,15 +16,15 @@ module.exports.getRoutes = function getRoutes(app) {
 
 
 	function getStack(stack) {
-		var routes = {};
-		var anonCounter = 1;
+		let routes = {};
+		let anonCounter = 1;
 
 		if (!stack || !stack.length) {
 			return 'function';
 		}
 
 		_.forOwn(stack, function(middleware) {
-			var route = '',
+			let route = '',
 				method = 'middleware',
 				name = middleware.handle.name || '<anonymous ' + anonCounter++ + '>',
 				subroute = 'function';

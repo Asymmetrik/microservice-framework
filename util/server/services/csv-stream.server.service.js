@@ -2,7 +2,7 @@
 
 /** @module util/services/csvstream */
 
-var through2 = require('through2'),
+const through2 = require('through2'),
 	stringify = require('csv-stringify'),
 	jsonpath = require('JSONPath'),
 	pipe = require('multipipe'),
@@ -41,13 +41,13 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 	res.set('Transfer-Encoding', 'chunked');
 
 	// Buffer the stream if we have a delay
-	var curStream = stream;
+	let curStream = stream;
 	if(delay && delay > 0) {
 		// Store all the active timeouts
-		var timeouts = [];
+		let timeouts = [];
 
 		// Flush function: wait until all the timeouts are done before we forward the finish command
-		var onFlush = function(callback) {
+		let onFlush = function(callback) {
 			// If there are still pending requests, check again soon
 			if (timeouts.length > 0) {
 				setTimeout(function() {
@@ -61,9 +61,9 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 		};
 
 		// Create a stream that applies a timeout to each payload.
-		var delayStream = through2.obj(function (chunk, enc, callback) {
+		let delayStream = through2.obj(function (chunk, enc, callback) {
 			// After a delay, pass the chunk on to the next stream handler
-			var t = setTimeout(function() {
+			let t = setTimeout(function() {
 				timeouts.splice(timeouts.indexOf(t), 1);
 				callback(null, chunk);
 			}, delay);
@@ -105,8 +105,8 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 	});
 
 	// Create a stream to turn Mongo records into CSV rows
-	var csvStream = through2.obj(function (chunk, enc, callback) {
-		var row = [];
+	let csvStream = through2.obj(function (chunk, enc, callback) {
+		let row = [];
 
 		// Turn Mongo models into actual objects so JSONPath can work with them
 		if (null != chunk.toObject) {
@@ -116,7 +116,7 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 		columns.forEach(function (column) {
 			if (column.hasOwnProperty('key')) {
 				// Get the value from the object using jsonpath
-				var value = jsonpath.eval(chunk, '$.' + column.key);
+				let value = jsonpath.eval(chunk, '$.' + column.key);
 
 				// Get the first returned value
 				if (value.length > 0) {
@@ -144,7 +144,7 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 	});
 
 	// Parse the columns array into a format the CSV stringify module is expecting
-	var csvColumns = [];
+	let csvColumns = [];
 	columns.forEach(function(value) {
 		if (value.hasOwnProperty('title')) {
 			csvColumns.push(value.title);
@@ -152,13 +152,13 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 	});
 
 	// Assemble the CSV headers and stream the CSV response back to the client
-	var csv = stringify({
+	let csv = stringify({
 		header: true,
 		columns: csvColumns
 	});
 
 	// Create an output stream piping the parsing stream to the CSV stream
-	var out = pipe(csvStream, csv);
+	let out = pipe(csvStream, csv);
 	out.on('error', function(err) {
 		logger.err(err, 'Failed to create CSV');
 	});

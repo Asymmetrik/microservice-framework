@@ -13,7 +13,7 @@
 		"monospaceLinks": true,
 		"linenums": true,
 		"copyright": "Copyright © 2016-2017 Asymmetrik, Ltd. All Rights Reserved.",
-		"systemName": "Campfire",
+		"systemName": "Microservice Framework",
 		"outputSourceFiles": true,
 		"outputSourcePath": true
 	},

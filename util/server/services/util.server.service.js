@@ -2,7 +2,7 @@
 
 /** @module util/services/util */
 
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
 	_ = require('lodash'),
 	moment = require('moment-timezone'),
 	config = require('../../../lib/config');
@@ -32,7 +32,7 @@ exports.catchError = function(res, err, callback) {
  * @param err {Object} Error object
  */
 exports.simplifyErrors = function(err) {
-	var errors = _.isArray(err.errors) ? err.errors : [err.errors];
+	let errors = _.isArray(err.errors) ? err.errors : [err.errors];
 	return _.chain(errors)
 		.map(function(error) {
 			return _.map(error, function(value, key) {
@@ -71,7 +71,7 @@ exports.send400Error = function (res, err) {
 		return exports.sendSimple400Error(res, err);
 	}
 
-	var simpleErrors = exports.simplifyErrors(err);
+	let simpleErrors = exports.simplifyErrors(err);
 	return res.status(400).send({
 		message: err.message,
 		detail: exports.getErrorDetails(simpleErrors),
@@ -158,7 +158,7 @@ exports.validateIsUnique = function(modelName, field) {
 		}
 
 		// Build query
-		var find = {};
+		let find = {};
 		find[field] = property;
 		find._id = {$ne: this._id};
 
@@ -175,7 +175,7 @@ exports.validateIsUnique = function(modelName, field) {
  * @returns array of objectIds.
  */
 exports.castToIDs = function(array){
-	var ret = [];
+	let ret = [];
 	_.each(array, function(string){
 		if (mongoose.Types.ObjectId.isValid(string)) {
 			ret.push(mongoose.Types.ObjectId(string));
@@ -227,7 +227,7 @@ exports.stripProtocol = function(string) {
 exports.generateCleanRegex = function(phrase) {
 	//replace special characters with escaped special characters
 	if (!phrase) phrase = '';
-	var cleanPhrase = phrase.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, '\\$&');
+	let cleanPhrase = phrase.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, '\\$&');
 	return new RegExp(cleanPhrase, 'i');
 };
 
@@ -240,7 +240,7 @@ exports.generateCleanRegex = function(phrase) {
 exports.generateNumberRegex = function(phrase) {
 	//replace special characters with escaped special characters
 	if (!phrase) phrase = '';
-	var cleanPhrase = phrase.replace(/[^0-9]/g, '');
+	let cleanPhrase = phrase.replace(/[^0-9]/g, '');
 	return cleanPhrase ? new RegExp(cleanPhrase, 'i') : null;
 };
 
@@ -250,7 +250,7 @@ exports.generateNumberRegex = function(phrase) {
  * @returns {mongoose.Model} The model, with a slug added if necessary.
  */
 exports.generateSlug = function(model) {
-	var generatedSlug = false;
+	let generatedSlug = false;
 	if (model.name && !model.slug) {
 		generatedSlug = true;
 		model.slug = model.name;

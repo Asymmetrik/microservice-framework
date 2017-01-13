@@ -2,7 +2,7 @@
 
 /** @module util/services/email */
 
-var path = require('path'),
+const path = require('path'),
 	_ = require('lodash'),
 	proxyquire = require('proxyquire'),
 	config = require('../../../lib/config'),
@@ -13,12 +13,12 @@ let mockServiceRegistry = {};
 let mockServices = {};
 
 exports.getDependencyList = function(filePath) {
-	var dependency = require(path.resolve(filePath));
+	let dependency = require(path.resolve(filePath));
 	return dependency.testingDependencies || [];
 };
 
 exports.getMockPath = function(str) {
-	var regex = /(.*)\/server\/.*\/(.*).js/;
+	let regex = /(.*)\/server\/.*\/(.*).js/;
 	if (str.match(regex)) {
 		return str.replace(regex, '$1' + '/tests/server/mocks/' + '$2' + '.mock.js');
 	}
@@ -26,9 +26,9 @@ exports.getMockPath = function(str) {
 };
 
 exports.mockFile = function(filePath, proxyAccessMethods) {
-	var mockPath = exports.getMockPath(filePath);
-	var proxyOptions = {};
-	var fileMethods = {};
+	let mockPath = exports.getMockPath(filePath);
+	let proxyOptions = {};
+	let fileMethods = {};
 	proxyAccessMethods = proxyAccessMethods || {};
 
 	try {
@@ -37,10 +37,10 @@ exports.mockFile = function(filePath, proxyAccessMethods) {
 		logger.error(err);
 	} // Do nothing, this means no file exists.
 
-	var dependencies = exports.getDependencyList(filePath);
+	let dependencies = exports.getDependencyList(filePath);
 	_.each(dependencies, function(dependency) {
-		var key = dependency;
-		var options = exports.getExternalMock(key);
+		let key = dependency;
+		let options = exports.getExternalMock(key);
 
 		// This is not an external mock, must be a file.
 		if (!options) {
@@ -48,7 +48,7 @@ exports.mockFile = function(filePath, proxyAccessMethods) {
 			options = exports.mockFile(dependency, proxyAccessMethods);
 		}
 
-		if (options.proxyAccessMethods) {
+		if (options != null && options.proxyAccessMethods) {
 			proxyAccessMethods = _.extend(proxyAccessMethods, options.proxyAccessMethods);
 		}
 
@@ -57,7 +57,7 @@ exports.mockFile = function(filePath, proxyAccessMethods) {
 
 
 	// Append access methods to mocked file, so the test has the ability to access / modify data
-	var ret = proxyquire(path.resolve(filePath), proxyOptions);
+	let ret = proxyquire(path.resolve(filePath), proxyOptions);
 	ret = _.extend(ret, proxyAccessMethods, fileMethods);
 	return ret;
 };

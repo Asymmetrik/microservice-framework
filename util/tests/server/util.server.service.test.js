@@ -5,7 +5,7 @@
 /**
  * Module dependencies.
  */
-var	should = require('should'),
+const	should = require('should'),
 	util = require('../../../main').util;
 
 /**

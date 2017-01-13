@@ -5,7 +5,7 @@
 /**
  * Module dependencies.
  */
-let	should = require('should'),
+const	should = require('should'),
 	proxyquireService = require('../../../main').proxyquire;
 
 /**
@@ -34,7 +34,7 @@ describe('Proxyquire Service Unit Tests:', function() {
 		utilService.testingDependencies.length.should.equal(2);
 		utilService.testingDependencies[0].should.equal('./util/server/services/date.server.service.js');
 		// This method only exists on the mock; if it exists, this is the mocked module.
-		utilService.isMocked().should.equal(true);
+		should.exist(utilService.resetUpload);
 		done();
 	});
 

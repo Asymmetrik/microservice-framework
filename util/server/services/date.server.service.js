@@ -2,7 +2,7 @@
 
 /** @module util/services/date */
 
-var moment = require('moment'),
+const moment = require('moment'),
 	config = require('../../../lib/config');
 
 /**
@@ -13,7 +13,7 @@ var moment = require('moment'),
  */
 exports.parseDate = function(dateString) {
 	try {
-		var newDate = moment(dateString);
+		let newDate = moment(dateString);
 		if ( newDate == null || newDate === 'Invalid Date' ) {
 			newDate = new Date();
 		}

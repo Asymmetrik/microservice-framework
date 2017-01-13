@@ -2,7 +2,7 @@
 
 /** @module config/env/default */
 
-var env = require('var');
+const env = require('var');
 
 /**
  * @name exports

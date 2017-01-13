@@ -3,7 +3,7 @@
 /** @module util/services/test-route */
 
 
-let q = require('q'),
+const q = require('q'),
 	_ = require('lodash'),
 	mongoose = require('mongoose'),
 	User = _.indexOf(mongoose.modelNames(), 'User') > -1 ? mongoose.model('User') : null,

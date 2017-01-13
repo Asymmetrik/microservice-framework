@@ -5,7 +5,7 @@
 /**
  * Module dependencies.
  */
-let should = require('should'),
+const should = require('should'),
 	queryService = require('../../../main').query;
 
 /**
