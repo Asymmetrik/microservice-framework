@@ -39,10 +39,12 @@ describe('Proxyquire Service Unit Tests:', function() {
 	});
 
 	it('should expose access to service for direct modification', function(done) {
-		let utilService = proxyquireService.mockFile('./util/server/services/util.server.service.js');
+		let utilService = proxyquireService.mockFile('./util/server/services/util.server.service.js', {directModification: ()=>42});
 		should.exist(utilService.generateCleanRegex);
 		// This method only exists on the mock; if it exists, this is the mocked module.
 		utilService.isMocked().should.equal(true);
+		// This method only exists on the mock; if it exists, this is the mocked module.
+		utilService.directModification().should.equal(42);
 		done();
 	});
 
