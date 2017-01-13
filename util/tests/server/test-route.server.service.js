@@ -22,7 +22,7 @@ const q = require('q'),
  * @returns {Promise} A promise that resolves with the generated request object
  */
 exports.generateRequest = function(userId) {
-	let returnObject = (user) => {
+	const returnObject = (user) => {
 		return {
 			body: {},
 			params: {},
@@ -56,7 +56,7 @@ exports.generateUser = function(role) {
 		return q(defaultUser);
 	}
 
-	let user = new User(defaultUser);
+	const user = new User(defaultUser);
 	if (role) {
 		user.roles.user = true;
 		user.roles[role] = true;
@@ -95,7 +95,7 @@ exports.clearDB = function() {
  */
 exports.testRoute = function(routeFileObject, routeName, routeType, paramValues, req, callback) {
 	// mock object used to gather all the information about the route
-	let mockApp = {
+	const mockApp = {
 		routeName: '',
 		routes: {},
 		params: {},
@@ -140,10 +140,10 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 	 * @param functions {Array} The array of functions for the route
 	 * @param err {Object} The error object
 	 */
-	let mockRoute = function(defer, req, res, index, functions, err) {
+	const mockRoute = function(defer, req, res, index, functions, err) {
 		if (err) return defer.reject(err);
 		if (!functions[index]) return defer.reject(new Error('next called at the end of the route'));
-		let responseSent = function(resp) {
+		const responseSent = function(resp) {
 			if (resp) res.getResponse().sentValue = resp;
 			if (!functions[index + 1]) defer.resolve();
 			else defer.reject(resp);
@@ -172,12 +172,12 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 	 * @param params {Array} The array of parameter functions for the middleware
 	 * @param paramIds {Array} The array of the parameter values
 	 */
-	let mockParams = function(defer, req, res, index, params, paramIds) {
+	const mockParams = function(defer, req, res, index, params, paramIds) {
 		if (index === params.length) return defer.resolve();
-		let funcDefer = q.defer();
+		const funcDefer = q.defer();
 		if (params[index]) {
 			res.send = funcDefer.reject;
-			let mockParamRoute = function(paramIndex, err) {
+			const mockParamRoute = function(paramIndex, err) {
 				if (err) return funcDefer.reject(err);
 				if (params[index].length === paramIndex) return funcDefer.resolve();
 				params[index][paramIndex](req, res, mockParamRoute.bind(null, paramIndex + 1), paramIds[index]);
@@ -196,8 +196,8 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 		});
 	};
 	// create the response object
-	let resObj = {};
-	let res = {
+	const resObj = {};
+	const res = {
 		header: function(value) { this.getResponse().header = value; return this; },
 		status: function(value) { this.getResponse().status = value; return this; },
 		set: function(key, value) {
@@ -214,8 +214,8 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 	};
 	// load the route and run the test
 	routeFileObject(mockApp);
-	let paramDefer = q.defer();
-	let matchedParams = routeName.match(/:[^/]+/g);
+	const paramDefer = q.defer();
+	const matchedParams = routeName.match(/:[^/]+/g);
 	if (matchedParams) {
 		mockParams(paramDefer, req, res, 0, _.map(matchedParams, function(paramName) {
 			// remove the ':' from the start of the param name
@@ -226,7 +226,7 @@ exports.testRoute = function(routeFileObject, routeName, routeType, paramValues,
 		paramDefer.resolve();
 	}
 	paramDefer.promise.then(function() {
-		let routeDefer = q.defer();
+		const routeDefer = q.defer();
 		mockRoute(routeDefer, req, res, 0, mockApp.routes[routeName][routeType]);
 		return routeDefer.promise;
 	}).then(function() {

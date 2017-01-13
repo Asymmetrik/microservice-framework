@@ -9,12 +9,13 @@ const path = require('path'),
 	logger = require('../../../lib/logger').logger;
 
 exports.testingDependencies = [];
-let mockServiceRegistry = {};
-let mockServices = {};
+const mockServiceRegistry = {};
+const mockServices = {};
+const regex = /(.*)\/server\/.*\/(.*).js/;
 
 exports.getDependencyList = function(filePath) {
 	try {
-		let dependency = require(path.resolve(filePath));
+		const dependency = require(path.resolve(filePath));
 		return dependency.testingDependencies || [];
 	}
 	catch (err) {
@@ -23,7 +24,6 @@ exports.getDependencyList = function(filePath) {
 };
 
 exports.getMockPath = function(str) {
-	let regex = /(.*)\/server\/.*\/(.*).js/;
 	if (str.match(regex)) {
 		return str.replace(regex, '$1' + '/tests/server/mocks/' + '$2' + '.mock.js');
 	}
@@ -31,8 +31,8 @@ exports.getMockPath = function(str) {
 };
 
 exports.mockFile = function(filePath, proxyAccessMethods) {
-	let mockPath = exports.getMockPath(filePath);
-	let proxyOptions = {};
+	const mockPath = exports.getMockPath(filePath);
+	const proxyOptions = {};
 	let fileMethods = {};
 	proxyAccessMethods = proxyAccessMethods || {};
 
@@ -42,7 +42,7 @@ exports.mockFile = function(filePath, proxyAccessMethods) {
 		logger.error(err);
 	} // Do nothing, this means no file exists.
 
-	let dependencies = exports.getDependencyList(filePath);
+	const dependencies = exports.getDependencyList(filePath);
 	_.each(dependencies, function(dependency) {
 		let key = dependency;
 		let options = exports.getExternalMock(key);

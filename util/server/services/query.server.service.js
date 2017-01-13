@@ -7,7 +7,7 @@ const mongoose = require('mongoose'),
 	q = require('q');
 
 // Dangerous query keys: https://docs.mongodb.org/manual/faq/fundamentals/#javascript
-let blacklist = ['$where', 'mapReduce', 'group'];
+const blacklist = ['$where', 'mapReduce', 'group'];
 
 /**
  * @function escapeRegex
@@ -31,7 +31,7 @@ function generateFind(query) {
 	// If the query is non-null, add the query terms
 	if(null != query){
 		find = find || {};
-		for(let k in query){
+		for(const k in query){
 			find[k] = query[k];
 		}
 	}
@@ -46,7 +46,7 @@ function generateFind(query) {
  * @returns {Object}
  */
 function generateSort(sortArr) {
-	let sort = {};
+	const sort = {};
 
 	// If the sort is non-null, extract the sort instructions
 	if(null != sortArr){
@@ -74,11 +74,11 @@ function generateSort(sortArr) {
 function pagingQuery(schema, find, projection, options, sort, limit, offset) {
 
 	// Build the query
-	let baseQuery = schema.find(find);
-	let findQuery = schema.find(find, projection, options).sort(sort).skip(offset).limit(limit);
+	const baseQuery = schema.find(find);
+	const findQuery = schema.find(find, projection, options).sort(sort).skip(offset).limit(limit);
 
 	// Build the promise response
-	let countDefer = q.defer();
+	const countDefer = q.defer();
 	baseQuery.count(function(error, results){
 		if(null != error){
 			countDefer.reject(error);
@@ -86,7 +86,7 @@ function pagingQuery(schema, find, projection, options, sort, limit, offset) {
 			countDefer.resolve(results);
 		}
 	});
-	let queryDefer = q.defer();
+	const queryDefer = q.defer();
 	findQuery.exec(function(error, results){
 		if(null != error){
 			queryDefer.reject(error);
@@ -95,7 +95,7 @@ function pagingQuery(schema, find, projection, options, sort, limit, offset) {
 		}
 	});
 
-	let returnDefer = q.defer();
+	const returnDefer = q.defer();
 	q.all([countDefer.promise, queryDefer.promise]).then(function(results){
 		returnDefer.resolve({ count: results[0], results: results[1] });
 	}, function(error){
@@ -120,9 +120,9 @@ function pagingQuery(schema, find, projection, options, sort, limit, offset) {
 module.exports.containsQuery = function(schema, query, fields, search, limit, offset, sortArr) {
 	// Initialize find to null
 	let find = generateFind(query);
-	let projection = {};
-	let options = {};
-	let sort = generateSort(sortArr);
+	const projection = {};
+	const options = {};
+	const sort = generateSort(sortArr);
 
 	// Build the find
 	if(null != search && '' !== search) {
@@ -132,7 +132,7 @@ module.exports.containsQuery = function(schema, query, fields, search, limit, of
 			find.$or = [];
 
 			fields.forEach(function(element){
-				let constraint = {};
+				const constraint = {};
 				constraint[element] = { $regex: new RegExp(escapeRegex(search), 'gim') };
 
 				find.$or.push(constraint);
@@ -157,9 +157,10 @@ module.exports.containsQuery = function(schema, query, fields, search, limit, of
 module.exports.search = function(schema, query, searchTerms, limit, offset, sortArr) {
 	// Initialize find to null
 	let find = generateFind(query);
+	// NOTE: Why does this variable exist?
 	let projection;
-	let options = {};
-	let sort = generateSort(sortArr);
+	const options = {};
+	const sort = generateSort(sortArr);
 
 
 	// If the searchTerms is non-null, then build the text search
@@ -196,7 +197,7 @@ module.exports.formatQueryParam = function(param) {
 		if (!param.dataType) {
 			_.each(param, function(value, key) {
 
-				let val = module.exports.formatQueryParam(value);
+				const val = module.exports.formatQueryParam(value);
 				if (_.indexOf(blacklist, key) === -1 && val !== null) {
 					param[key] = val;
 				}

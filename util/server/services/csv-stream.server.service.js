@@ -47,7 +47,7 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 		let timeouts = [];
 
 		// Flush function: wait until all the timeouts are done before we forward the finish command
-		let onFlush = function(callback) {
+		const onFlush = function(callback) {
 			// If there are still pending requests, check again soon
 			if (timeouts.length > 0) {
 				setTimeout(function() {
@@ -61,9 +61,9 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 		};
 
 		// Create a stream that applies a timeout to each payload.
-		let delayStream = through2.obj(function (chunk, enc, callback) {
+		const delayStream = through2.obj(function (chunk, enc, callback) {
 			// After a delay, pass the chunk on to the next stream handler
-			let t = setTimeout(function() {
+			const t = setTimeout(function() {
 				timeouts.splice(timeouts.indexOf(t), 1);
 				callback(null, chunk);
 			}, delay);
@@ -105,8 +105,8 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 	});
 
 	// Create a stream to turn Mongo records into CSV rows
-	let csvStream = through2.obj(function (chunk, enc, callback) {
-		let row = [];
+	const csvStream = through2.obj(function (chunk, enc, callback) {
+		const row = [];
 
 		// Turn Mongo models into actual objects so JSONPath can work with them
 		if (null != chunk.toObject) {
@@ -144,7 +144,7 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 	});
 
 	// Parse the columns array into a format the CSV stringify module is expecting
-	let csvColumns = [];
+	const csvColumns = [];
 	columns.forEach(function(value) {
 		if (value.hasOwnProperty('title')) {
 			csvColumns.push(value.title);
@@ -152,13 +152,13 @@ module.exports = function(req, res, stream, filename, columns, delay, appendStre
 	});
 
 	// Assemble the CSV headers and stream the CSV response back to the client
-	let csv = stringify({
+	const csv = stringify({
 		header: true,
 		columns: csvColumns
 	});
 
 	// Create an output stream piping the parsing stream to the CSV stream
-	let out = pipe(csvStream, csv);
+	const out = pipe(csvStream, csv);
 	out.on('error', function(err) {
 		logger.err(err, 'Failed to create CSV');
 	});

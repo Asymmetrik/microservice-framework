@@ -32,7 +32,7 @@ exports.catchError = function(res, err, callback) {
  * @param err {Object} Error object
  */
 exports.simplifyErrors = function(err) {
-	let errors = _.isArray(err.errors) ? err.errors : [err.errors];
+	const errors = _.isArray(err.errors) ? err.errors : [err.errors];
 	return _.chain(errors)
 		.map(function(error) {
 			return _.map(error, function(value, key) {
@@ -71,7 +71,7 @@ exports.send400Error = function (res, err) {
 		return exports.sendSimple400Error(res, err);
 	}
 
-	let simpleErrors = exports.simplifyErrors(err);
+	const simpleErrors = exports.simplifyErrors(err);
 	return res.status(400).send({
 		message: err.message,
 		detail: exports.getErrorDetails(simpleErrors),
@@ -158,7 +158,7 @@ exports.validateIsUnique = function(modelName, field) {
 		}
 
 		// Build query
-		let find = {};
+		const find = {};
 		find[field] = property;
 		find._id = {$ne: this._id};
 
@@ -175,7 +175,7 @@ exports.validateIsUnique = function(modelName, field) {
  * @returns array of objectIds.
  */
 exports.castToIDs = function(array){
-	let ret = [];
+	const ret = [];
 	_.each(array, function(string){
 		if (mongoose.Types.ObjectId.isValid(string)) {
 			ret.push(mongoose.Types.ObjectId(string));
@@ -227,7 +227,7 @@ exports.stripProtocol = function(string) {
 exports.generateCleanRegex = function(phrase) {
 	//replace special characters with escaped special characters
 	if (!phrase) phrase = '';
-	let cleanPhrase = phrase.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, '\\$&');
+	const cleanPhrase = phrase.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, '\\$&');
 	return new RegExp(cleanPhrase, 'i');
 };
 
@@ -240,7 +240,7 @@ exports.generateCleanRegex = function(phrase) {
 exports.generateNumberRegex = function(phrase) {
 	//replace special characters with escaped special characters
 	if (!phrase) phrase = '';
-	let cleanPhrase = phrase.replace(/[^0-9]/g, '');
+	const cleanPhrase = phrase.replace(/[^0-9]/g, '');
 	return cleanPhrase ? new RegExp(cleanPhrase, 'i') : null;
 };
 

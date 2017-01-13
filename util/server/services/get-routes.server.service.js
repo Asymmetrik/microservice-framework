@@ -16,7 +16,7 @@ module.exports.getRoutes = function getRoutes(app) {
 
 
 	function getStack(stack) {
-		let routes = {};
+		const routes = {};
 		let anonCounter = 1;
 
 		if (!stack || !stack.length) {
@@ -26,8 +26,8 @@ module.exports.getRoutes = function getRoutes(app) {
 		_.forOwn(stack, function(middleware) {
 			let route = '',
 				method = 'middleware',
-				name = middleware.handle.name || '<anonymous ' + anonCounter++ + '>',
 				subroute = 'function';
+			const name = middleware.handle.name || '<anonymous ' + anonCounter++ + '>';
 
 			if (middleware.route) {
 				route = middleware.route.path;
