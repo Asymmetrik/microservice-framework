@@ -4,9 +4,7 @@ services:
   test:
     depends_on:
       - mongo
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     command: npm test
     environment:
       NODE_ENV: test
