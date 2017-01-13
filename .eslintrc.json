@@ -48,6 +48,18 @@
 		"comma-dangle": [
 			"error",
 			"never"
+		],
+		"prefer-const": [
+			"error"
+		],
+		"no-shadow": [
+			"error"
+		],
+		"no-console": [
+			"error"
+		],
+		"no-debugger": [
+			"error"
 		]
 	},
 	"globals": {

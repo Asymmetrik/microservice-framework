@@ -6,7 +6,7 @@
  * Module dependencies.
  */
 const	should = require('should'),
-	util = require('../../../main').util;
+	{util} = require('../../../main');
 
 /**
  * Tests
