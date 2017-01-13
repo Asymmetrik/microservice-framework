@@ -2,7 +2,7 @@
 
 /** @module core/tests/server/route/test-routes */
 
-let through = require('through2'),
+const through = require('through2'),
 	gutil = require('gulp-util'),
 	mongoose = require('mongoose'),
 	q = require('q'),
@@ -49,19 +49,19 @@ let through = require('through2'),
  */
 module.exports = function(silent) {
 	let totalNumberOfErrors = 0;
-	let config = require('../../lib/config');
+	const config = require('../../lib/config');
 	return through.obj(function(vinylFile, encoding, next) {
 		// load the file
-		let util = require('../tests/test-route.server.service.js');
-		let file = require(vinylFile.path);
+		const util = require('../tests/test-route.server.service.js');
+		const file = require(vinylFile.path);
 		if (!file) {
 			return next(null, vinylFile);
 		}
-		let fileName = vinylFile.path.substring(vinylFile.path.lastIndexOf('/') + 1);
+		const fileName = vinylFile.path.substring(vinylFile.path.lastIndexOf('/') + 1);
 		// load the test
 		let testFile;
 		try {
-			let matches = /(?:app\/)+(.+)\/server\/routes\/(.+).js/g.exec(vinylFile.path);
+			const matches = /(?:app\/)+(.+)\/server\/routes\/(.+).js/g.exec(vinylFile.path);
 			testFile = require(path.resolve('./app/' + matches[1] + '/tests/server/routes/' + matches[2] + '.test.js'));
 		}
 		catch(e) {
@@ -69,7 +69,7 @@ module.exports = function(silent) {
 			testFile = {};
 		}
 		// mock object used to gather all the information about the route
-		let mockApp = {
+		const mockApp = {
 			routeName: '',
 			routes: {},
 			params: {},
@@ -99,9 +99,9 @@ module.exports = function(silent) {
 			}
 		};
 		// allow us to step through the routes, one at a time
-		let mockRoutes = function(defer, routeNameIndex, routeNames, routeTypeIndex, routeTypes) {
+		const mockRoutes = function(defer, routeNameIndex, routeNames, routeTypeIndex, routeTypes) {
 			// if the route doesn't have the selected routeType, just skip this
-			let next = function() {
+			const next = function() {
 				++routeTypeIndex;
 				if (routeTypeIndex === routeTypes.length) {
 					routeTypeIndex = 0;
@@ -114,8 +114,8 @@ module.exports = function(silent) {
 					mockRoutes(defer, routeNameIndex, routeNames, routeTypeIndex, routeTypes);
 				}
 			};
-			let routeName = routeNames[routeNameIndex];
-			let routeType = routeTypes[routeTypeIndex];
+			const routeName = routeNames[routeNameIndex];
+			const routeType = routeTypes[routeTypeIndex];
 			if (!testFile[routeName][routeType]) return next();
 			let testCounts;
 			let admin;
@@ -123,7 +123,7 @@ module.exports = function(silent) {
 			 * @inner
 			 * @summary Clears the database and then adds an admin user
 			 */
-			let clearDB = function() {
+			const clearDB = function() {
 				return util.clearDB().then(function() {
 					testCounts = { User: 1 };
 					return util.generateUser('admin').then(function(user) {

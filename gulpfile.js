@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-let _ = require('lodash'),
+const _ = require('lodash'),
 	runSequence = require('run-sequence'),
 	gulp = require('gulp'),
 	plugins = require('gulp-load-plugins')(),
@@ -15,7 +15,7 @@ let _ = require('lodash'),
  * Print the error to console and exit(-1)
  * @param  {Error} err
  */
-var handleError = function handleError(err) {
+const handleError = function handleError(err) {
 	logger.error(err.toString());
 	process.exit(1);
 };
