@@ -13,8 +13,13 @@ let mockServiceRegistry = {};
 let mockServices = {};
 
 exports.getDependencyList = function(filePath) {
-	let dependency = require(path.resolve(filePath));
-	return dependency.testingDependencies || [];
+	try {
+		let dependency = require(path.resolve(filePath));
+		return dependency.testingDependencies || [];
+	}
+	catch (err) {
+		logger.error(`Failed to retrieve dependencies from "${filePath}"`);
+	}
 };
 
 exports.getMockPath = function(str) {
