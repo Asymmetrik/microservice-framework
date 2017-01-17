@@ -89,6 +89,10 @@ exports.getExternalMock = function(name, reload) {
 };
 
 function initMoxiequire() {
+	/**
+	 * The glob search and callback will pull in internal (microservice-framework) moxiequire files
+	 * to register with the moxiequire service.
+	 */
 	glob('../../tests/moxiequire/*.moxiequire.js',{cwd: __dirname, absolute: true}, (err, matches) => {
 		if (err) {
 			logger.error(err);
@@ -98,15 +102,18 @@ function initMoxiequire() {
 			_.assign(mockServices, factory);
 		});
 	});
+	/**
+	 * This conditional block will pull in external (host application) moxiequire files
+	 * and will override any factory methods with the same name.
+	 */
 	if (config.files.tests.moxiequire) {
 		_.each(config.files.tests.moxiequire, function(file) {
 			const factory = require(path.resolve(file));
 			if (_.has(mockServices, factory)) {
-				logger.error(`Attempt to register duplicate moxiequire external dependency: ${file}`);
+				logger.info(`External dependency ${factory} was reregistered by ${file}`);
 			}
-			else {
-				_.assign(mockServices, factory);
-			}
+			_.assign(mockServices, factory);
+
 		});
 	}
 }
