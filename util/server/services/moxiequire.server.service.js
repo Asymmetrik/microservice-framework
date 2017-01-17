@@ -109,8 +109,8 @@ function initMoxiequire() {
 		if (config.files.tests.moxiequire) {
 			_.each(config.files.tests.moxiequire, function(file) {
 				const factory = require(path.resolve(file));
-				if (_.has(mockServices, factory)) {
-					logger.info(`External dependency ${factory} was reregistered by ${file}`);
+				if (_.hasIn(mockServices, _.keys(factory))) {
+					logger.info(`External dependency was reregistered by ${file}`);
 				}
 				_.assign(mockServices, factory);
 
