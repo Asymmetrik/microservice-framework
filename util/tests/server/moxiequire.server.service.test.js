@@ -67,7 +67,7 @@ describe('Proxyquire Service Unit Tests:', function() {
 	});
 
 	it('should still include un-mocked methods', function(done) {
-		const proxyMockService = proxyquireService.mockFile('./util/server/services/proxyquire.server.service.js');
+		const proxyMockService = proxyquireService.mockFile('./util/server/services/moxiequire.server.service.js');
 		const dependencies = proxyMockService.getDependencyList('./util/server/services/util.server.service.js');
 		dependencies.length.should.equal(2);
 		dependencies[0].should.equal('./util/server/services/date.server.service.js');

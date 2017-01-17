@@ -23,7 +23,7 @@ module.exports = {
 	query:          require('./util/server/services/query.server.service.js'),
 	util:           require('./util/server/services/util.server.service.js'),
 	getRoutes:      require('./util/server/services/get-routes.server.service.js'),
-	proxyquire:     require('./util/server/services/proxyquire.server.service.js'),
+	moxiequire:     require('./util/server/services/moxiequire.server.service.js'),
 	gulp: {
 		mongo:      require('./util/gulp/mongo-helpers.js'),
 		testRoutes: require('./util/gulp/test-routes.js')

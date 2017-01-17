@@ -13,6 +13,6 @@ module.exports = {
 	},
 	tests: {
 		server: ['util/tests/**/*.js'],
-		proxyquire: ['util/tests/proxyquire/**/*.js']
+		moxiequire: ['util/tests/moxiequire/**/*.js']
 	}
 };

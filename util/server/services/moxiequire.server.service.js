@@ -6,7 +6,7 @@ const path = require('path'),
 	_ = require('lodash'),
 	proxyquire = require('proxyquire'),
 	config = require('../../../lib/config'),
-	logger = require('../../../lib/logger').logger;
+	{logger} = require('../../../lib/logger');
 
 exports.testingDependencies = [];
 const mockServiceRegistry = {};
@@ -87,12 +87,18 @@ exports.getExternalMock = function(name, reload) {
 	}
 };
 
-function initProxyquire() {
-	if (config.files.tests.proxyquire) {
-		_.each(config.files.tests.proxyquire, function(file) {
-			_.assign(mockServices, require(path.resolve(file)));
+function initMoxiequire() {
+	if (config.files.tests.moxiequire) {
+		_.each(config.files.tests.moxiequire, function(file) {
+			const factory = require(path.resolve(file));
+			if (_.has(mockServices, factory)) {
+				logger.error(`Attempt to register duplicate moxiequire external dependency: ${file}`);
+			}
+			else {
+				_.assign(mockServices, factory);
+			}
 		});
 	}
 }
 
-initProxyquire();
+initMoxiequire();
