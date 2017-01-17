@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+/* eslint-disable no-console */
 var program = require('commander'),
 	path = require('path'),
 	fs = require('fs'),
@@ -74,7 +74,6 @@ function copy(sourcePath, targetPath, options) {
 
 						// Compare the checksums
 						.spread(function(data, prevcs, newcs) {
-							/* eslint-disable no-console */
 							// The file does not already exist
 							if (!prevcs) {
 								console.log(newfilepath, ' (creating with mode', mode.toString(8), ')');
@@ -89,7 +88,6 @@ function copy(sourcePath, targetPath, options) {
 									return q.when();
 								}
 							}
-							/* eslint-enable no-console */
 							// The file has not changed, so don't bother saving
 							else {
 								return q.when();
@@ -148,9 +146,7 @@ program.command('generate <service-name>')
 				copy(__dirname + '/app-template', './app/' + serviceName, options);
 			})
 			.catch(function(err) {
-				/* eslint-disable no-console */
 				console.err(err);
-				/* eslint-enable no-console */
 				return q.reject(err);
 			})
 			.done();
@@ -166,3 +162,4 @@ program.parse(process.argv);
 if (!ran) {
 	program.help();
 }
+/* eslint-enable no-console */
