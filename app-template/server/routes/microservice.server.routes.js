@@ -1,6 +1,6 @@
 'use strict';
 
-var controller = require('../controllers/microservice.server.controller');
+const controller = require('../controllers/microservice.server.controller');
 
 module.exports = function(app) {
 

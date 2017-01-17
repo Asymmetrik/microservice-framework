@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-
+'use strict';
+/* eslint-disable no-console */
 var program = require('commander'),
 	path = require('path'),
 	fs = require('fs'),
@@ -45,7 +46,7 @@ function copy(sourcePath, targetPath, options) {
 			.then(function (stats) {
 				// If it's a file, copy the file and replace any parameters with the passed-in options
 				if (stats.isFile()) {
-					var mode = stats.mode & 0777;
+					var mode = stats.mode & 0o777;
 
 					return q.when()
 
@@ -74,13 +75,12 @@ function copy(sourcePath, targetPath, options) {
 
 						// Compare the checksums
 						.spread(function(data, prevcs, newcs) {
-
 							// The file does not already exist
 							if (!prevcs) {
 								console.log(newfilepath, ' (creating with mode', mode.toString(8), ')');
 							}
 							// The file has changed
-							else if (prevcs != newcs) {
+							else if (prevcs !== newcs) {
 								if (options.force) {
 									console.log(newfilepath, ' (overwriting)');
 								}
@@ -105,7 +105,7 @@ function copy(sourcePath, targetPath, options) {
 
 						// Get everything in the directory
 						.then(function() {
-							return readdir(oldfilepath)
+							return readdir(oldfilepath);
 						})
 
 						// Recursively copy all the files to the new location
@@ -163,3 +163,4 @@ program.parse(process.argv);
 if (!ran) {
 	program.help();
 }
+/* eslint-enable no-console */
