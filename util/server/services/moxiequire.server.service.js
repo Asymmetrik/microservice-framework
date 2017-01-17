@@ -4,6 +4,7 @@
 
 const path = require('path'),
 	_ = require('lodash'),
+	glob = require('glob'),
 	proxyquire = require('proxyquire'),
 	config = require('../../../lib/config'),
 	{logger} = require('../../../lib/logger');
@@ -88,6 +89,15 @@ exports.getExternalMock = function(name, reload) {
 };
 
 function initMoxiequire() {
+	glob('../../tests/moxiequire/*.moxiequire.js',{cwd: __dirname, absolute: true}, (err, matches) => {
+		if (err) {
+			logger.error(err);
+		}
+		_.each(matches, (match) => {
+			const factory = require(path.resolve(match));
+			_.assign(mockServices, factory);
+		});
+	});
 	if (config.files.tests.moxiequire) {
 		_.each(config.files.tests.moxiequire, function(file) {
 			const factory = require(path.resolve(file));
