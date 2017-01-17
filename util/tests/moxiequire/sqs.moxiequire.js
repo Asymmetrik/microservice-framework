@@ -120,7 +120,7 @@ function getSqsMock() {
 
 			// Return the data after the poll time finishes
 			setTimeout(() => {
-				cb(null, messages);
+				cb(null, {Messages: messages});
 			}, WaitTimeSeconds * 1000);
 
 			// After the visibility timeout, the message will be available for polling again

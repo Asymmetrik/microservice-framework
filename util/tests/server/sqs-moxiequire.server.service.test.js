@@ -216,7 +216,7 @@ describe('Simple Notification Service Unit Tests', function () {
 			sqs._getMessageFromQueue(query, (err, results) => {
 				should(err).equal(null);
 				should(results).not.equal(null);
-				results.should.have.lengthOf(Math.min(messages.length, 10));
+				results.Messages.should.have.lengthOf(Math.min(messages.length, 10));
 				setTimeout(done, timeout);
 			});
 
