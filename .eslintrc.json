@@ -6,7 +6,7 @@
 	},
 	"parserOptions": {
 		"ecmaVersion": 6,
-		"sourceType": "module"
+		"sourceType": "script"
 	},
 	"extends": "eslint:recommended",
 	"rules": {
@@ -60,6 +60,10 @@
 		],
 		"no-debugger": [
 			"error"
+		],
+		"strict": [
+			"error",
+			"global"
 		]
 	},
 	"globals": {
