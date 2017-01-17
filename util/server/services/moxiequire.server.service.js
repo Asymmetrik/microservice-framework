@@ -101,21 +101,23 @@ function initMoxiequire() {
 			const factory = require(path.resolve(match));
 			_.assign(mockServices, factory);
 		});
-	});
-	/**
-	 * This conditional block will pull in external (host application) moxiequire files
-	 * and will override any factory methods with the same name.
-	 */
-	if (config.files.tests.moxiequire) {
-		_.each(config.files.tests.moxiequire, function(file) {
-			const factory = require(path.resolve(file));
-			if (_.has(mockServices, factory)) {
-				logger.info(`External dependency ${factory} was reregistered by ${file}`);
-			}
-			_.assign(mockServices, factory);
 
-		});
-	}
+		/**
+		 * This conditional block will pull in external (host application) moxiequire files
+		 * and will override any factory methods with the same name.
+		 */
+		if (config.files.tests.moxiequire) {
+			_.each(config.files.tests.moxiequire, function(file) {
+				const factory = require(path.resolve(file));
+				if (_.has(mockServices, factory)) {
+					logger.info(`External dependency ${factory} was reregistered by ${file}`);
+				}
+				_.assign(mockServices, factory);
+
+			});
+		}
+	});
+
 }
 
 initMoxiequire();
