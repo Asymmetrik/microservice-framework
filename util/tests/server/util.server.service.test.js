@@ -5,14 +5,8 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-	_ = require('lodash'),
-	path = require('path'),
-	q = require('q'),
-	should = require('should'),
-
-	deps = require(path.resolve('./config/dependencies.js')),
-	util = deps.utilService;
+const	should = require('should'),
+	{util} = require('../../../main');
 
 /**
  * Tests

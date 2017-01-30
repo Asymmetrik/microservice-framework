@@ -1,0 +1,72 @@
+{
+	"env": {
+		"node": true,
+		"mocha": true,
+		"es6": true
+	},
+	"parserOptions": {
+		"ecmaVersion": 6,
+		"sourceType": "script"
+	},
+	"extends": "eslint:recommended",
+	"rules": {
+		"arrow-parens": [
+			"error",
+			"always"
+		],
+		"eqeqeq": [
+			"error",
+			"smart"
+		],
+		"no-mixed-spaces-and-tabs": [
+			"error",
+			"smart-tabs"
+		],
+		"no-trailing-spaces": [
+			"error"
+		],
+		"no-unused-vars": [
+			"error",
+			{
+				"vars": "all",
+				"varsIgnorePattern": "extend|should",
+				"args": "none"
+			}
+		],
+		"quotes": [
+			"error",
+			"single"
+		],
+		"linebreak-style": [
+			"error",
+			"unix"
+		],
+		"semi": [
+			"error",
+			"always"
+		],
+		"comma-dangle": [
+			"error",
+			"never"
+		],
+		"prefer-const": [
+			"error"
+		],
+		"no-shadow": [
+			"error"
+		],
+		"no-console": [
+			"error"
+		],
+		"no-debugger": [
+			"error"
+		],
+		"strict": [
+			"error",
+			"global"
+		]
+	},
+	"globals": {
+
+	}
+}

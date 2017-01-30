@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  test:
+    depends_on:
+      - mongo
+    build: .
+    command: npm test
+    environment:
+      NODE_ENV: test
+      MONGO_DATABASE: msf
+      EMAIL_USER: Test
+    volumes:
+      - ./lib:/srv/app/lib
+      - ./util:/srv/app/util
+      - ./main.js:/srv/app/main.js
+  mongo:
+    image: mongo:3.2.5

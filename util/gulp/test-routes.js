@@ -2,7 +2,7 @@
 
 /** @module core/tests/server/route/test-routes */
 
-let through = require('through2'),
+const through = require('through2'),
 	gutil = require('gulp-util'),
 	mongoose = require('mongoose'),
 	q = require('q'),
@@ -49,19 +49,19 @@ let through = require('through2'),
  */
 module.exports = function(silent) {
 	let totalNumberOfErrors = 0;
-	let config = require('../../lib/config');
-	return through.obj(function(vinylFile, encoding, next) {
+	const config = require('../../lib/config');
+	return through.obj(function(vinylFile, encoding, callback) {
 		// load the file
-		let util = require('../tests/test-route.server.service.js');
-		let file = require(vinylFile.path);
+		const util = require('../tests/test-route.server.service.js');
+		const file = require(vinylFile.path);
 		if (!file) {
-			return next(null, vinylFile);
+			return callback(null, vinylFile);
 		}
-		let fileName = vinylFile.path.substring(vinylFile.path.lastIndexOf('/') + 1);
+		const fileName = vinylFile.path.substring(vinylFile.path.lastIndexOf('/') + 1);
 		// load the test
 		let testFile;
 		try {
-			let matches = /(?:app\/)+(.+)\/server\/routes\/(.+).js/g.exec(vinylFile.path);
+			const matches = /(?:app\/)+(.+)\/server\/routes\/(.+).js/g.exec(vinylFile.path);
 			testFile = require(path.resolve('./app/' + matches[1] + '/tests/server/routes/' + matches[2] + '.test.js'));
 		}
 		catch(e) {
@@ -69,13 +69,13 @@ module.exports = function(silent) {
 			testFile = {};
 		}
 		// mock object used to gather all the information about the route
-		let mockApp = {
+		const mockApp = {
 			routeName: '',
 			routes: {},
 			params: {},
-			route: function(path) {
-				if (!testFile[path]) testFile[path] = {};
-				this.routeName = path;
+			route: function(filePath) {
+				if (!testFile[filePath]) testFile[filePath] = {};
+				this.routeName = filePath;
 				return this;
 			},
 			put: function() {
@@ -99,9 +99,9 @@ module.exports = function(silent) {
 			}
 		};
 		// allow us to step through the routes, one at a time
-		let mockRoutes = function(defer, routeNameIndex, routeNames, routeTypeIndex, routeTypes) {
+		const mockRoutes = function(defer, routeNameIndex, routeNames, routeTypeIndex, routeTypes) {
 			// if the route doesn't have the selected routeType, just skip this
-			let next = function() {
+			const next = function() {
 				++routeTypeIndex;
 				if (routeTypeIndex === routeTypes.length) {
 					routeTypeIndex = 0;
@@ -114,8 +114,8 @@ module.exports = function(silent) {
 					mockRoutes(defer, routeNameIndex, routeNames, routeTypeIndex, routeTypes);
 				}
 			};
-			let routeName = routeNames[routeNameIndex];
-			let routeType = routeTypes[routeTypeIndex];
+			const routeName = routeNames[routeNameIndex];
+			const routeType = routeTypes[routeTypeIndex];
 			if (!testFile[routeName][routeType]) return next();
 			let testCounts;
 			let admin;
@@ -123,7 +123,7 @@ module.exports = function(silent) {
 			 * @inner
 			 * @summary Clears the database and then adds an admin user
 			 */
-			let clearDB = function() {
+			const clearDB = function() {
 				return util.clearDB().then(function() {
 					testCounts = { User: 1 };
 					return util.generateUser('admin').then(function(user) {
@@ -138,11 +138,11 @@ module.exports = function(silent) {
 					// check to see if we need to run this test
 					if (test.skip) return;
 					let passed = 1;
-					let outputError = function(errors) {
+					const outputError = function(errors) {
 						++totalNumberOfErrors;
 						passed = 0;
-						let name = _.isEmpty(test) ? 'default test' : test.name || 'test #' + index;
-						let message = 'Failed ' + name + ' for ' + routeName + ' (' + routeType + ') in ' + fileName + ':';
+						const name = _.isEmpty(test) ? 'default test' : test.name || 'test #' + index;
+						const message = 'Failed ' + name + ' for ' + routeName + ' (' + routeType + ') in ' + fileName + ':';
 						if (_.isArray(errors)) errors.unshift(message);
 						else errors = [message, errors];
 						gutil.log.apply(this, _.map(errors, function(value) {
@@ -150,7 +150,7 @@ module.exports = function(silent) {
 						}));
 					};
 					// make a copy of the config
-					let originalConfig = {};
+					const originalConfig = {};
 					_.extend(originalConfig, config);
 					testPromise = testPromise.then(function() {
 						// check to see if we need to wipe the db
@@ -163,7 +163,7 @@ module.exports = function(silent) {
 					}).then(function() {
 						return util.generateRequest(test.user || admin._id);
 					}).then(function(req) {
-						let routeDefer = q.defer();
+						const routeDefer = q.defer();
 						if (test.body) req.body = test.body;
 						if (test.params) req.params = test.params;
 						if (test.query) req.query = test.query;
@@ -183,7 +183,7 @@ module.exports = function(silent) {
 							}
 							q.when({}).then(function() {
 								if (test.validate) {
-									let cleanRes = _.transform(response, function(result, value, key) {
+									const cleanRes = _.transform(response, function(result, value, key) {
 										if (!_.isFunction(value)) result[key] = value;
 									}, {});
 									return test.validate(_.cloneDeep(response.getResponse()), cleanRes);
@@ -204,7 +204,7 @@ module.exports = function(silent) {
 					}).then(function() {
 						// check to see if anything got inserted
 						return q.allSettled(_.map(mongoose.modelNames(), function(modelName) {
-							let expectedCount = testCounts[modelName] || 0;
+							const expectedCount = testCounts[modelName] || 0;
 							return q.ninvoke(mongoose.model(modelName), 'count').then(function(count) {
 								if (count !== expectedCount) {
 									testCounts[modelName] = count;
@@ -230,9 +230,9 @@ module.exports = function(silent) {
 		catch(err) {
 			gutil.log('error encountered trying parse ' + fileName, err);
 			++totalNumberOfErrors;
-			next(null, vinylFile);
+			callback(null, vinylFile);
 		}
-		let routesPromise = q.defer();
+		const routesPromise = q.defer();
 		if (_.isEmpty(testFile)) {
 			routesPromise.resolve();
 		}
@@ -245,7 +245,10 @@ module.exports = function(silent) {
 			++totalNumberOfErrors;
 			gutil.log('error encountered while mocking the routes in ' + fileName, err);
 		}).done(function() {
-			next(null, vinylFile);
+			if (totalNumberOfErrors) {
+				gutil.log('Total number of errors: ' + totalNumberOfErrors);
+			}
+			callback(null, vinylFile);
 		});
 	});
 };
