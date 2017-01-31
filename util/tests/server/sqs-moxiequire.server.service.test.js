@@ -2,7 +2,7 @@
 const should = require('should'),
 	_ = require('lodash'),
 	q = require('q'),
-	{moxiequire} = require('../../../main'),
+	moxiequire = require('../../../main').moxiequire(),
 	SQS = moxiequire.getExternalMock('sqs');
 
 const clearDatabase = function clearDatabase () {

@@ -6,7 +6,7 @@
  * Module dependencies.
  */
 const should = require('should'),
-	{moxiequire} = require('../../../main');
+	moxiequire = require('../../../main').moxiequire();
 
 /**
  * Tests
