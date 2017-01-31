@@ -90,7 +90,7 @@ const messages = [
 		}
 	];
 
-describe('Simple Notification Service Unit Tests', function () {
+describe('SQS-Moxiequire Unit Tests', function () {
 
 	before(function (done) {
 		clearDatabase().then(function () {

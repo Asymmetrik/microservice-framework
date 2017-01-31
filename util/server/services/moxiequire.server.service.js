@@ -9,44 +9,48 @@ const path = require('path'),
 	config = require('../../../lib/config'),
 	{logger} = require('../../../lib/logger');
 
-exports = () => {
-	const mockServiceRegistry = {};
-	const mockServices = {};
-	const regex = /(.*)\/server\/.*\/(.*).js/;
+const mockServiceRegistry = {};
+const mockServices = {};
+const regex = /(.*)\/server\/.*\/(.*).js/;
 
-	function initMoxiequire() {
+const initMoxiequire = () => {
+	/**
+	 * The glob search and callback will pull in internal (microservice-framework) moxiequire files
+	 * to register with the moxiequire service.
+	 */
+	try {
+		const matches = glob.sync('../../tests/moxiequire/*.moxiequire.js',{cwd: __dirname, absolute: true});
+		_.each(matches, (match) => {
+			const factory = require(path.resolve(match));
+			_.assign(mockServices, factory);
+		});
+
 		/**
-		 * The glob search and callback will pull in internal (microservice-framework) moxiequire files
-		 * to register with the moxiequire service.
+		 * This conditional block will pull in external (host application) moxiequire files
+		 * and will override any factory methods with the same name.
 		 */
-		glob('../../tests/moxiequire/*.moxiequire.js',{cwd: __dirname, absolute: true}, (err, matches) => {
-			if (err) {
-				logger.error(err);
-			}
-			_.each(matches, (match) => {
-				const factory = require(path.resolve(match));
+		if (config.files.tests.moxiequire) {
+			_.each(config.files.tests.moxiequire, function(file) {
+				const factory = require(path.resolve(file));
+				if (_.hasIn(mockServices, _.keys(factory))) {
+					logger.debug(`External dependency was reregistered by ${file}`);
+				}
 				_.assign(mockServices, factory);
 			});
-
-			/**
-			 * This conditional block will pull in external (host application) moxiequire files
-			 * and will override any factory methods with the same name.
-			 */
-			if (config.files.tests.moxiequire) {
-				_.each(config.files.tests.moxiequire, function(file) {
-					const factory = require(path.resolve(file));
-					if (_.hasIn(mockServices, _.keys(factory))) {
-						logger.debug(`External dependency was reregistered by ${file}`);
-					}
-					_.assign(mockServices, factory);
-				});
-			}
-		});
+		}
 	}
-
+	catch (err) {
+		logger.error(err);
+	}
+};
+let self = null;
+module.exports = () => {
+	if (self) {
+		return self;
+	}
 	initMoxiequire();
 
-	const self = {
+	self = {
 		getDependencyList: (filePath) => {
 			try {
 				const dependency = require(path.resolve(filePath));
