@@ -6,7 +6,7 @@
  * Module dependencies.
  */
 const should = require('should'),
-	{moxiequire} = require('../../../main');
+	moxiequire = require('../../../main').moxiequire();
 
 /**
  * Tests
@@ -67,7 +67,7 @@ describe('Moxiequire Service Unit Tests:', function() {
 	});
 
 	it('should still include un-mocked methods', function(done) {
-		const proxyMockService = moxiequire.mockFile('./util/server/services/moxiequire.server.service.js');
+		const proxyMockService = moxiequire.mockFile('./util/server/services/moxiequire.server.service.js')();
 		const dependencies = proxyMockService.getDependencyList('./util/server/services/util.server.service.js');
 		dependencies.length.should.equal(2);
 		dependencies[0].should.equal('./util/server/services/date.server.service.js');

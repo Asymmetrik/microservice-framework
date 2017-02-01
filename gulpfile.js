@@ -52,24 +52,19 @@ gulp.task('build', ['lint', 'jsdoc']);
 
 // Mocha tests task
 gulp.task('mocha', function (done) {
-	// Open mongoose connections
-	var mongoose = msf.mongoose;
+	var sources = argv.f ? [ 'app/**/' + argv.f ] : msf.config.files.tests.server;
+	var expect = require('gulp-expect-file');
 
-	mongoose.connect().then(function() {
-		var sources = argv.f ? [ 'app/**/' + argv.f ] : msf.config.files.tests.server;
-		var expect = require('gulp-expect-file');
-
-		gulp.src(sources)
-			.pipe(expect(sources))
-			.pipe(plugins.mocha({
-				bail: argv.bail,
-				reporter: 'spec'
-			}))
-			.on('error', handleError)
-			.on('end', function() {
-				mongoose.disconnect(done);
-			});
-	}).catch(handleError);
+	gulp.src(sources)
+		.pipe(expect(sources))
+		.pipe(plugins.mocha({
+			bail: argv.bail,
+			reporter: 'spec'
+		}))
+		.on('error', handleError)
+		.on('end', function() {
+			done();
+		});
 });
 
 
