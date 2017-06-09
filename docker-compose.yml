@@ -6,6 +6,8 @@ services:
       - mongo
     build: .
     command: npm test
+    env_file:
+      - .local-secrets/jwt.secrets
     environment:
       NODE_ENV: test
       MONGO_DATABASE: msf
