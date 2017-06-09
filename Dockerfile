@@ -10,5 +10,5 @@ RUN npm install --loglevel=warn
 COPY . /srv/app/
 
 ENV PATH="/srv/app:${PATH}"
-
+ENTRYPOINT ["/srv/app/docker/Entrypoint.sh"]
 CMD ["npm", "test"]
