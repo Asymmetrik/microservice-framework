@@ -13,3 +13,6 @@ log/
 ## Ignore local development env files
 config/env/*-local.js
 local.env
+
+##Ignore secrets
+.local-secrets/*.secret*
