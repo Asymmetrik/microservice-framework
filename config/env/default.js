@@ -17,7 +17,9 @@ module.exports = {
 	},
 
 	mongoose: {
-		debug: false
+		debug: false,
+		poolSize: env.MONGO_POOL_SIZE,
+		autoIndex: env.MONGO_AUTO_INDEX
 	},
 	db: 'mongodb://' + env.MONGO_HOST + '/' + env.MONGO_DATABASE,
 
