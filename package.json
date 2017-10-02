@@ -22,6 +22,7 @@
     "jsdoc": "jsdoc main.js -c jsdoc.json -r"
   },
   "dependencies": {
+    "@asymmetrik/yadda-secret": "0.0.1",
     "JSONPath": "^0.11.2",
     "body-parser": "^1.12.2",
     "chalk": "^1.1.3",
@@ -38,8 +39,8 @@
     "glob": "^7.0.6",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.4",
-    "gulp-insert": "^0.4",
     "gulp-eslint": "^3.0.1",
+    "gulp-insert": "^0.4",
     "gulp-load-plugins": "^1.3.0",
     "gulp-rename": "~1.2.2",
     "gulp-shell": "^0.5.2",
