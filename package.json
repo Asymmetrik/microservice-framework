@@ -22,7 +22,7 @@
     "jsdoc": "jsdoc main.js -c jsdoc.json -r"
   },
   "peerDependencies": {
-    "@asymmetrik/yadda-secret": "^0.0.4",
+    "@asymmetrik/yadda-secret": "^0.0.4"
   },
   "dependencies": {
     "JSONPath": "^0.11.2",
