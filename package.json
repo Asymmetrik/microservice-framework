@@ -22,7 +22,7 @@
     "jsdoc": "jsdoc main.js -c jsdoc.json -r"
   },
   "dependencies": {
-    "@asymmetrik/yadda-secret": "^0.0.1",
+    "@asymmetrik/yadda-secret": "^0.0.4",
     "JSONPath": "^0.11.2",
     "body-parser": "^1.12.2",
     "chalk": "^1.1.3",
