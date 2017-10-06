@@ -9,6 +9,7 @@ node_modules/
 *.iml
 docs/*
 log/
+package-lock.json
 
 ## Ignore local development env files
 config/env/*-local.js
