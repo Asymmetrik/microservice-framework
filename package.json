@@ -1,9 +1,8 @@
 {
   "name": "microservice-framework",
   "description": "An Node/Express container framework for micro-services",
-  "version": "0.1.5",
+  "version": "0.1.4",
   "author": "Asymmetrik",
-  "private": true,
   "main": "main.js",
   "bin": {
     "microservice": "./run.js"
