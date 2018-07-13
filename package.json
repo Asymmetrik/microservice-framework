@@ -12,8 +12,8 @@
     "url": "ssh://git@github.com:Asymmetrik/microservice-framework.git"
   },
   "engines": {
-    "node": "^6.x.x",
-    "npm": "^3.x"
+    "node": ">=6.12.x <=8.x.x",
+    "npm": ">=3.x.x <=5.x.x"
   },
   "scripts": {
     "test": "gulp test",
